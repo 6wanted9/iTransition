@@ -8,8 +8,8 @@ namespace Task3
     {
         string playerName, pcName;
         int size;
-        string[] gameElements;
-        string[,] rulesGrid;
+        private string[] gameElements;
+        private string[,] rulesGrid;
         public Rules(string[] gameEls, string playerName, string pcName)
         {
             this.playerName = playerName;
@@ -77,17 +77,13 @@ namespace Task3
             return rulesGrid[x, y];
         }
 
-        public void ShowRules()
+        public string[,] GetRules()
         {
-            for (int i = 0; i < size; i++)
-            {
-                for (int j = 0; j < size; j++)
-                {
-                    Console.Write($"{rulesGrid[i, j]}\t");
-                }
-                Console.WriteLine();
-                Console.WriteLine();
-            }
+            return rulesGrid;
+        }
+        public string[] GetElements()
+        {
+            return gameElements;
         }
     }
 }

@@ -53,7 +53,7 @@ namespace Task3
             string menuOption = Menu(gameElements);
             if (menuOption == "?")
             {
-
+                ASCIITable.CreateTable(rules);
             }
             else if (menuOption == "0")
             {
@@ -81,6 +81,7 @@ namespace Task3
                 Console.WriteLine($"Original KEY: {currentPCKey}");
                 Console.WriteLine("============================");
             }
+            
         }
 
         static string RandomPCTurn(string[] arrTurns)
@@ -103,12 +104,19 @@ namespace Task3
                 }
                 Console.WriteLine("0 - Exit.");
                 Console.WriteLine("? - Help.");
-                Console.Write("Please, choose option: ");
+                Console.Write("Please, enter your move: ");
                 string option = Console.ReadLine();
                 Console.WriteLine("============================");
-                if (Convert.ToInt32(option) >= 0 && Convert.ToInt32(option) <= gameEls.Length || option == "?")
+                if (option == "?")
                 {
                     return option;
+                }
+                else if (int.TryParse(option, out int temp))
+                {
+                    if (Convert.ToInt32(option) >= 0 && Convert.ToInt32(option) <= gameEls.Length)
+                    {
+                        return option;
+                    }
                 }
                 else
                 {
