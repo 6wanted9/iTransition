@@ -10,7 +10,7 @@ namespace Task3
         public static string KeyGenerator()
         {
             var random = RandomNumberGenerator.Create();
-            var bytes = new byte[4]; // 16 bytes
+            var bytes = new byte[16]; // 16 bytes
             random.GetNonZeroBytes(bytes);
             string result = Convert.ToString(BitConverter.ToInt32(bytes));
             return result;
