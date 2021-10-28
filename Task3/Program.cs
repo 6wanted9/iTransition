@@ -7,39 +7,49 @@ namespace Task3
     {
         static void Main(string[] args)
         {
-            string strGElements;
-            string[] gameElements;
             //Entering game elements:
-            while (true)
+            string[] gameElements = new string[args.Length];
+            Array.Copy(args, gameElements, args.Length);
+            //Valid-check:
+            bool duplicate = false;
+            bool isSpace = false;
+            bool errors = false;
+            for (int i = 0; i < gameElements.Length; i++)
             {
-                Console.Write("Enter game elements: ");
-                strGElements = Console.ReadLine();
-                gameElements = strGElements.Split(" ");
-                bool duplicate = false;
-                for (int i = 0; i < gameElements.Length; i++)
-                    for (int j = 0; j < gameElements.Length; j++)
-                        if (gameElements[i].ToLower() == gameElements[j].ToLower() && i != j)
-                        {
-                            duplicate = true;
-                            break;
-                        }
-                if (!duplicate && gameElements.Length >= 3 && (gameElements.Length % 2) == 1)
-                    break;
-                else
+                if (gameElements[i] == " ")
                 {
-                    if (duplicate)
-                    {
-                        Console.WriteLine("Don't use duplicate game elements.");
-                    }
-                    if (gameElements.Length < 3)
-                    {
-                        Console.WriteLine("Use at least 3 game elemets.");
-                    }
-                    if ((gameElements.Length % 2) != 1)
-                    {
-                        Console.WriteLine("Use an odd number of game elemets.");
-                    }
+                    isSpace = true;
                 }
+                for (int j = 0; j < gameElements.Length; j++)
+                    if (gameElements[i].ToLower() == gameElements[j].ToLower() && i != j)
+                    {
+                        duplicate = true;
+                        break;
+                    }
+            }
+            if (duplicate)
+            {
+                Console.WriteLine("Don't use duplicate game elements.");
+                errors = true;
+            }
+            if (gameElements.Length < 3)
+            {
+                Console.WriteLine("Use at least 3 game elemets.");
+                errors = true;
+            }
+            if ((gameElements.Length % 2) != 1)
+            {
+                Console.WriteLine("Use an odd number of game elemets.");
+                errors = true;
+            }
+            if (isSpace)
+            {
+                Console.WriteLine("Don't use space symbol.");
+                errors = true;
+            }
+            if (errors)
+            {
+                return;
             }
             //Actions after succesfull entering of elements:
             //Setting rules:
