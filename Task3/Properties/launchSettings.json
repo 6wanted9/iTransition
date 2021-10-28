@@ -1,8 +1,7 @@
 {
   "profiles": {
     "Task3": {
-      "commandName": "Project",
-      "commandLineArgs": "paper scissors rock"
+      "commandName": "Project"
     }
   }
 }
