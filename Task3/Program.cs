@@ -5,11 +5,8 @@ namespace Task3
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main(string[] gameElements)
         {
-            //Entering game elements:
-            string[] gameElements = new string[args.Length];
-            Array.Copy(args, gameElements, args.Length);
             //Valid-check:
             bool duplicate = false;
             bool isSpace = false;
