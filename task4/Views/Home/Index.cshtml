@@ -1,0 +1,46 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center">
+    @if (SignInManager.IsSignedIn(User))
+    {
+    <div class="main-part">
+        <div class="message-info">
+            @if (BroAndSis.LastMessage != null)
+            {
+                <a id="last-message">@BroAndSis.LastMessage</a>
+                <a id="name-and-time">Sent by @BroAndSis.LastUser at @BroAndSis.TimeOfLastMsg</a>
+            }
+        </div>
+            <div class="buttons">
+                @using (Html.BeginForm("BroCL", "Counter"))
+                {
+                    <button id="bro-btn" name="User" value="@User.Identity.Name">Bro!</button>
+                }
+                @using (Html.BeginForm("SisCL", "Counter"))
+                {
+
+                    <button id="sis-btn" name="User" value="@User.Identity.Name">Sis!</button>
+                }
+            </div>
+    </div>
+        
+    }
+    else
+    {
+    <div class="main-part">
+        <div class="messages">
+            <a id="bro-msg">@BroAndSis.Bro Bro!</a>
+            <a id="sis-msg">@BroAndSis.Sis Sis!</a>
+        </div>
+    </div>
+    }
+</div>
