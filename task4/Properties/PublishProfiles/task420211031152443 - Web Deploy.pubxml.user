@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Этот файл используется процессом публикации или упаковки вашего веб-проекта. Можно настроить поведение этого процесса,
+изменив этот файл MSBuild. Подробности см. на странице https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAZFbpBLcqtEmuL1UfeXyrqwAAAAACAAAAAAAQZgAAAAEAACAAAADv/mNcEr85tHWP6ls3HXxmxmEGn3Upw/EdpvGWLFl5nAAAAAAOgAAAAAIAACAAAAAx71kiWcH01i7b5X3OZ4Pd11KVz8lG9bBmYaY794Ev1IAAAADTI0jylMdoXJ0Kly2OUwFZvl/Xp2xb3WsI7iHvKQP1NpIiW6K+bRi268DrcHrY+HbNZAGf/w11h3s0Yg4vNfTXzFlwPfcdBorr/VfqNtTS6qU5T4f8Z52yHPxWr+J9l9qutKwfeSNszPjOVN9xVcOcV7wHDWMjsIsjCHzDW2epaUAAAADnL7Q3PVzibl4/2tJ/EEoXM64RlZ0xb1PsWbsCllA3LOvX8l4Di+fIJVcFW75zJq9goqU+xF4HcMGOf+ao26dm</EncryptedPassword>
+    <History>True|2021-10-31T18:40:10.7740649Z;False|2021-10-31T20:39:09.7020876+02:00;False|2021-10-31T20:28:07.0077888+02:00;False|2021-10-31T20:09:59.6066139+02:00;False|2021-10-31T20:06:03.1888518+02:00;False|2021-10-31T20:05:30.4717891+02:00;False|2021-10-31T19:59:50.7785867+02:00;False|2021-10-31T19:54:17.4041826+02:00;False|2021-10-31T19:29:19.3061430+02:00;False|2021-10-31T19:27:38.6392175+02:00;False|2021-10-31T19:22:47.1892203+02:00;False|2021-10-31T19:19:46.4798330+02:00;False|2021-10-31T19:18:00.9875446+02:00;False|2021-10-31T19:17:19.0866485+02:00;False|2021-10-31T19:08:11.5800152+02:00;False|2021-10-31T19:05:08.5515002+02:00;False|2021-10-31T17:48:09.4655769+02:00;False|2021-10-31T17:42:36.5483198+02:00;False|2021-10-31T17:41:45.6435808+02:00;False|2021-10-31T17:24:53.3282758+02:00;False|2021-10-31T17:21:21.7237623+02:00;False|2021-10-31T17:18:15.9776434+02:00;False|2021-10-31T16:59:58.2848974+02:00;False|2021-10-31T16:54:56.9929402+02:00;False|2021-10-31T16:53:02.6683036+02:00;False|2021-10-31T16:22:50.9648869+02:00;True|2021-10-31T15:47:16.7467803+02:00;True|2021-10-31T15:31:22.4515765+02:00;</History>
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="MyDbConnection">
+      <Value>Data Source=tcp:task4dbserveritransition.database.windows.net,1433%3bInitial Catalog=task4_db%3bUser Id=wanted%40task4dbserveritransition%3bPassword=+380973907047DK%3bIntegrated Security=False</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+  <ItemGroup>
+    <EFMigrations Include="task4.Data.ApplicationDbContext">
+      <Value>Data Source=tcp:task4dbserveritransition.database.windows.net,1433%3bInitial Catalog=task4_db%3bUser Id=wanted%40task4dbserveritransition%3bPassword=+380973907047DK%3bIntegrated Security=False</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>

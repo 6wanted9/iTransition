@@ -16,7 +16,13 @@
         <div class="message-info">
             @if (BroAndSis.LastMessage != null)
             {
-                <a id="last-message">@BroAndSis.LastMessage</a>
+                @using (Html.BeginForm("Reload", "Counter"))
+                {
+            <div >
+                <a asp-action="Reload" asp-controller="Counter" new { style = "color: black" } id="last-message">@BroAndSis.LastMessage</a>
+            </div>
+                    
+                }
                 <a id="name-and-time">Sent by @BroAndSis.LastUser at @BroAndSis.TimeOfLastMsg</a>
             }
         </div>

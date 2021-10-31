@@ -96,6 +96,7 @@ body {
 #last-message {
     font-family: 'American Captain';
     font-size: 2em;
+    color: black;
 }
 #name-and-time {
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;

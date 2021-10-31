@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using task4.Data;
+using Microsoft.AspNetCore.Http;
 
 namespace task4
 {
@@ -30,19 +31,23 @@ namespace task4
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("MyDbConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.Secure = CookieSecurePolicy.Always;
+            });
             services.AddAuthentication()
         .AddGoogle(options =>
         {
             IConfigurationSection googleAuthNSection =
                 Configuration.GetSection("Authentication:Google");
 
-            options.ClientId = googleAuthNSection["ClientId"];
-            options.ClientSecret = googleAuthNSection["ClientSecret"];
+            options.ClientId = Configuration["Authentication:Google:ClientId"];
+            options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
         }).AddFacebook(facebookOptions =>
             {
                 facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
@@ -66,7 +71,7 @@ namespace task4
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseCookiePolicy();
             app.UseRouting();
 
             app.UseAuthentication();

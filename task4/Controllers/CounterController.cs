@@ -22,5 +22,10 @@ namespace task4.Controllers
             SisClick(User);
             Response.Redirect("/");
         }
+
+        public void Reload()
+        {
+            Response.Redirect("/");
+        }
     }
 }
