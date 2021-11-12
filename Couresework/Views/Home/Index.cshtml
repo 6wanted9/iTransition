@@ -1,0 +1,43 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@{
+    ViewData["Title"] = "Home Page";
+
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div class="form-floating mb-3">
+            <a class="btn btn-outline-primary" asp-action="CreatingReview" asp-controller="Home" value="Create Review">New Review</a>
+        </div>
+
+    }
+    @foreach (var item in Model)
+    {
+        <form asp-action="WatchingReview" asp-controller="Home" asp-route-reviewId="@item.Id" asp-route-userId="@UserManager.GetUserId(User)">
+            <div class="border border-gray rounded m-3 d-flex flex-row justify-content-between">
+                <div class="d-flex flex-column justify-content-start">
+                    <p class="ms-2 mt-2"><b>Topic:</b> @item.Name</p>
+                    @{
+                        string rateValue;
+                        if (item.UsersRate == 0)
+                        {
+                            rateValue = "None";
+                        }
+                        else
+                        {
+                            rateValue = $"{item.UsersRate}/5";
+                        }
+                    }
+                    <p class="ms-2"><b>Users rate:</b> @rateValue</p>
+                </div>
+                <button type="submit" class="btn btn-outline-primary" value="Watch Review">Watch Review</button>
+            </div>
+        </form>
+
+    }
+</div>

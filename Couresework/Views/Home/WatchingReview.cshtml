@@ -1,0 +1,65 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Westwind.AspNetCore.Markdown;
+@using Couresework.Data;
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject ApplicationDbContext DB
+@{
+    ViewData["Title"] = "Home Page";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div class="border border-gray rounded m-3">
+        <p class="mb-2 ms-2 mt-2"><b>Topic:</b> @Model.Name</p>
+        <p class="mb-2 ms-2"><b>Group:</b> @Model.Group</p>
+        <p class="mb-2 ms-2"><b>Tags:</b> @Model.Tags</p>
+    </div>
+    <div class="border border-gray rounded m-3 p-2">
+        <p><b>Review:</b></p>
+        <p>@Markdown.ParseHtmlString(String.Join("<br>", Model.ReviewText.Split("\n")))</p>
+    </div>
+    <div class="border border-gray rounded m-3">
+        <p class="mb-2 ms-2 mt-2"><b>Rating:</b> @Model.Rating/10</p>
+    </div>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        if (UserManager.GetUserId(User) != Model.AuthorId)
+        {
+
+            <div class="border border-gray rounded m-3 d-flex flex-row justify-content-between align-items-center">
+                <div class="d-flex flex-column justify-content-center">
+                    <a class="btn btn-outline-primary" asp-action="LikeReview" asp-controller="ReviewManipulating" asp-route-reviewID="@Model.Id" asp-route-userID="@UserManager.GetUserId(User)" value="@ViewData["likeVal"]">@ViewData["likeVal"]</a>
+                    <form asp-action="RateReview" asp-controller="ReviewManipulating" asp-route-reviewID="@Model.Id" asp-route-userID="@UserManager.GetUserId(User)" asp-antiforgery="true" runat="server" class="needs-validation" novalidate>
+                        <div class="d-flex flex-row justify-content-start">
+                            <select class="form-select" id="validationCustom01" name="rating" required>
+                                <option selected disabled value="">@ViewData["rateVal"]</option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>
+                            <button class="btn btn-outline-primary" type="submit">RATE</button>
+                        </div>
+                    </form>
+                </div>
+                @{
+                    string rateValue;
+                    if (Model.UsersRate == 0)
+                    {
+                        rateValue = "None";
+                    }
+                    else
+                    {
+                        rateValue = $"{Model.UsersRate}/5";
+                    }
+                }
+                <div class="border border-primary rounded bg-primary text-white text-center align-self-stretch d-flex flex-column justify-content-center">
+                    <p class="text-center m-2"><b>Users rate:</b> @rateValue</p>
+                </div>
+            </div>
+        }
+    }
+</div>

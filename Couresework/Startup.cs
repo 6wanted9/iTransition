@@ -1,5 +1,8 @@
+using Couresework.Data;
+using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -11,11 +14,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.Facebook;
-using task4.Data;
-using Microsoft.AspNetCore.Http;
 
-namespace task4
+namespace Couresework
 {
     public class Startup
     {
@@ -33,7 +33,7 @@ namespace task4
                 options.UseSqlServer(
                     Configuration.GetConnectionString("MyDbConnection")));
             services.AddDefaultIdentity<IdentityUser>(options =>
-            { 
+            {
                 options.SignIn.RequireConfirmedAccount = false;
                 options.SignIn.RequireConfirmedEmail = false;
             }).AddEntityFrameworkStores<ApplicationDbContext>();
@@ -85,6 +85,9 @@ namespace task4
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "revievmanipulating",
+                    pattern: "{controller=ReviewManipulating}/{action=CreateReview}/{id?}");
                 endpoints.MapRazorPages();
             });
         }
