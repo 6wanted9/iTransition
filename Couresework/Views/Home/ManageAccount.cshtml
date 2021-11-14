@@ -1,19 +1,22 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+@inject RoleManager<IdentityRole> RoleManager
 @{
     ViewData["Title"] = "Home Page";
-
 }
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var userRole = (IdentityRole)ViewData["userRole"];
 }
 <div class="container">
-    @if (SignInManager.IsSignedIn(User))
+    @if (SignInManager.IsSignedIn(User) && (UserManager.GetUserId(User) == Convert.ToString(ViewData["userID"]) || userRole.Name == "Admin"))
     {
-    }
-    <div class="d-flex flex-column justify-content-center">
-        <form asp-action="Index" asp-controller="Home" asp-antiforgery="true" runat="server" class="needs-validation" novalidate>
+        <div class="form-floating m-3">
+            <a class="btn btn-outline-primary" asp-action="CreatingReview" asp-controller="Home" value="Create Review">New Review</a>
+        </div>
+        <div class="d-flex flex-column justify-content-center">
+            <form asp-action="ManageAccount" asp-controller="Home" asp-route-userID="@UserManager.GetUserId(User)" asp-antiforgery="true" runat="server" class="needs-validation" novalidate>
                 <div class="m-3 d-flex flex-row justify-content-center">
                     <select class="form-select" id="validationCustom01" name="contentTypeSort" required>
                         <option selected disabled value="">@Convert.ToString(ViewData["contentTypeSort"])</option>
@@ -31,14 +34,13 @@
                         }
                     </select>
                     <button class="btn btn-outline-primary" type="submit">CHOOSE</button>
-            </div>
-        </form>
-    </div>
-    @if (Model != null)
-    {
-        foreach (var item in Model)
+                </div>
+            </form>
+        </div>
+        @if (Model != null)
         {
-            <form asp-action="WatchingReview" asp-controller="Home" asp-route-reviewId="@item.Id" asp-route-userId="@UserManager.GetUserId(User)">
+            foreach (var item in Model)
+            {
                 <div class="border border-gray rounded m-3 d-flex flex-row justify-content-between">
                     <div class="d-flex flex-column justify-content-start">
                         <p class="ms-2 mt-2"><b>Topic:</b> @item.Name</p>
@@ -55,11 +57,19 @@
                         }
                         <p class="ms-2"><b>Users rate:</b> @rateValue</p>
                     </div>
-                    <button type="submit" class="btn btn-outline-primary" value="Watch Review">Watch Review</button>
+                    <div class="d-flex flex-row justify-content-end align-items-stretch">
+                        <a class="btn btn-outline-primary me-1" value="Watch Review" asp-action="WatchingReview" asp-controller="Home" asp-route-reviewId="@item.Id" asp-route-userId="@UserManager.GetUserId(User)">Watch Review</a>
+                        <a class="btn btn-outline-success me-1" value="Edit Review" asp-action="EditingReview" asp-controller="Home" asp-route-reviewId="@item.Id" asp-route-userId="@UserManager.GetUserId(User)">Edit Review</a>
+                        <a class="btn btn-outline-danger" value="Delete Review" asp-action="DeletingReview" asp-controller="Home" asp-route-reviewId="@item.Id" asp-route-userId="@UserManager.GetUserId(User)">Delete Review</a>
+                    </div>
                 </div>
-            </form>
-
+            }
         }
     }
-
+    else
+    {
+        <div class="main-part">
+            <a>Access Declined</a>
+        </div>
+    }
 </div>

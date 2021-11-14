@@ -13,6 +13,9 @@ namespace Couresework.Data
         public DbSet<Review> Reviews { get; set; }
         
         public DbSet<ReviewStat> ReviewStats { get; set; }
+        public DbSet<LikesAmount> LikesAmounts { get; set; }
+
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -20,8 +23,12 @@ namespace Couresework.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<ReviewStat>()
-                .HasKey(t => new { t.Id, t.ReviewId, t.UserId });
+               .HasKey(t => t.Id );
+
+            modelBuilder.Entity<ReviewStat>()
+                .HasKey(t => new { t.ReviewId, t.UserId });
 
             modelBuilder.Entity<ReviewStat>()
                 .HasOne(pt => pt.Review)
@@ -32,6 +39,17 @@ namespace Couresework.Data
                 .HasOne(pt => pt.AspNetUsers)
                 .WithMany(t => t.ReviewStats)
                 .HasForeignKey(pt => pt.UserId);
+
+            modelBuilder.Entity<LikesAmount>()
+                .HasKey(t => t.Id);
+
+            modelBuilder.Entity<LikesAmount>()
+                .HasKey(t => new { t.UserId });
+
+            modelBuilder.Entity<AspNetUsers>()
+                .HasOne(pt => pt.LikesAmount)
+                .WithOne(p => p.AspNetUsers)
+                .HasForeignKey<LikesAmount>(pt => pt.UserId);
         }
     }
 }

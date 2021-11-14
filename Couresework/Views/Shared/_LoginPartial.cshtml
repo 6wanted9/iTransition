@@ -1,12 +1,30 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using Couresework.Data
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
-
+@inject ApplicationDbContext db
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
+        int likes;
+        if (db.LikesAmounts.FirstOrDefault(stat => stat.UserId == UserManager.GetUserId(User)) == null)
+        {
+            likes = 0;
+        }
+        else
+        {
+            likes = db.LikesAmounts.FirstOrDefault(stat => stat.UserId == UserManager.GetUserId(User)).Likes;
+        }
         <li class="nav-item">
-            <a class="nav-link text-dark" title="Manage">HI @User.Identity.Name!</a>
+            <a class="nav-link text-dark"> @likes</a>
+        </li>
+        <li class="nav-item d-flex flex-column justify-content-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+            </svg>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" title="Manage" asp-action="ManageAccount" asp-controller="Home" asp-route-userID="@UserManager.GetUserId(User)">@User.Identity.Name</a>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">

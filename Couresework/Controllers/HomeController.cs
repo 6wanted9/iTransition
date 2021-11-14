@@ -20,11 +20,51 @@ namespace Couresework.Controllers
             _logger = logger;
             _db = db;
         }
-        public async Task<IActionResult> Index()
-        {    
-            return View(await _db.Reviews.OrderByDescending(c => c.Id).Take(10).ToListAsync());
+        public async Task<IActionResult> Index(string contentTypeSort)
+        {
+            if (contentTypeSort == "Latest reviews" || contentTypeSort == null)
+            {
+                ViewData["contentTypeSort"] = "Latest reviews";
+                return View(await _db.Reviews.OrderByDescending(c => c.Id).Take(10).ToListAsync());
+            }
+            else if (contentTypeSort == "Popular reviews")
+            {
+                ViewData["contentTypeSort"] = "Popular reviews";
+                return View(await _db.Reviews.OrderByDescending(c => c.UsersRate).Take(10).ToListAsync());
+            }
+            else
+            {
+                ViewData["contentTypeSort"] = "TAGs";
+                return View();
+            }
         }
-
+        public async Task<IActionResult> ManageAccount(string contentTypeSort, string userID)
+        {
+            if (userID != null)
+            {
+                ViewData["userID"] = userID;
+                ViewData["userRole"] = _db.UserRoles.FirstOrDefault(role => role.UserId == userID);
+                if (contentTypeSort == "Latest reviews" || contentTypeSort == null)
+                {
+                    ViewData["contentTypeSort"] = "Latest reviews";
+                    return View(await _db.Reviews.OrderByDescending(c => c.Id).Where(c => c.AuthorId == userID).ToListAsync());
+                }
+                else if (contentTypeSort == "Popular reviews")
+                {
+                    ViewData["contentTypeSort"] = "Popular reviews";
+                    return View(await _db.Reviews.OrderByDescending(c => c.UsersRate).Where(c => c.AuthorId == userID).ToListAsync());
+                }
+                else
+                {
+                    ViewData["contentTypeSort"] = "TAGs";
+                    return View();
+                }
+            }
+            else
+            {
+                return View();
+            }
+        }
         public IActionResult Privacy()
         {
             return View();
@@ -60,6 +100,22 @@ namespace Couresework.Controllers
                 ViewData["rateVal"] = rateVal;
             }
             return View(review);
+        }
+        public IActionResult EditingReview(int reviewId, string userId)
+        {
+            ViewData["userRole"] = _db.UserRoles.FirstOrDefault(role => role.UserId == userId);
+            var review = _db.Reviews.Find(reviewId);
+            if (userId == review.AuthorId)
+            {
+                var reviewStat = _db.ReviewStats.FirstOrDefault(stat => stat.UserId == userId && stat.ReviewId == reviewId);
+                ViewData["authorId"] = review.AuthorId;
+                ViewData["review"] = review;
+                return View(review);
+            }
+            else
+            {
+                return View();
+            }
         }
     }
 }

@@ -1,0 +1,63 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model Review
+
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var userRole = (IdentityRole)ViewData["userRole"];
+
+}
+<div>
+    @if (SignInManager.IsSignedIn(User) && (Convert.ToString(ViewData["authorId"]) == UserManager.GetUserId(User) || userRole.Name == "Admin"))
+    {
+        var review = (Review)ViewData["review"];
+        if (review != null)
+        {
+            <form asp-action="EditReview" asp-controller="ReviewManipulating" asp-route-reviewId="@review.Id" asp-route-userId="@UserManager.GetUserId(User)" asp-antiforgery="true" runat="server" class="needs-validation" novalidate>
+                <div class="form-floating mb-3 needs-validation" novalidate>
+                    <input type="text" class="form-control" placeholder="Leave a comment here" id="validationCustom01" required asp-for="Name" value="@review.Name"/>
+                    <label for="validationCustom01" asp-for="Name"></label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" placeholder="Leave a comment here" id="validationCustom02" required asp-for="Group" />
+                    <label for="validationCustom02" asp-for="Group"></label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" placeholder="Leave a comment here" id="validationCustom03" required asp-for="Tags" />
+                    <label for="validationCustom03" asp-for="Tags"></label>
+                </div>
+                <div class="form-floating mb-3">
+                    <textarea class="form-control" placeholder="Leave a comment here" id="validationCustom04" required style="height: 100px" asp-for="ReviewText"></textarea>
+                    <label for="validationCustom04">Review</label>
+                </div>
+                <select class="form-select mb-3" id="validationCustom05" asp-for="Rating" required>
+                    <option selected disabled value="">Rating</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                </select>
+                <div class="form-floating">
+                    <button type="submit" class="btn btn-outline-primary">Sumbit</button>
+                </div>
+            </form>
+        }
+    }
+    else
+    {
+        <div class="main-part">
+            <a>Access Declined</a>
+        </div>
+    }
+</div>

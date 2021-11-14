@@ -1,5 +1,6 @@
 ﻿using Couresework.Data;
 using Couresework.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,24 +28,55 @@ namespace Couresework.Controllers
             _db.Add(review);
             _db.SaveChanges();
         }
+        public void EditReview(string name, string group, string tags, string reviewText, ushort rating, int reviewId, string userId)
+        {
+            Response.Redirect("/");
+            var review = _db.Reviews.FirstOrDefault(rev => rev.Id == reviewId);
+            if (review.AuthorId == userId)
+            {
+                review.Name = name;
+                review.Group = group;
+                review.Tags = tags;
+                review.ReviewText = reviewText;
+                review.Rating = rating;
+                _db.SaveChanges();
+            }
+        }
         public void LikeReview(int reviewID, string userID)
         {
             var reviewStatObj = _db.ReviewStats.FirstOrDefault(stat => stat.UserId == userID && stat.ReviewId == reviewID);
             var review = _db.Reviews.First(rev => rev.Id == reviewID);
+            string authorID = _db.Reviews.FirstOrDefault(rev => rev.Id == reviewID).AuthorId;
             if (reviewStatObj == null && review.AuthorId != userID)
             {
                 ReviewStat reviewStat = new ReviewStat{ ReviewId = reviewID, UserId = userID, UserLiked = true };
                 _db.Add(reviewStat);
+                var likeStat = new LikesAmount { UserId = authorID };
+                likeStat.Likes++;
+                _db.Add(likeStat);
             }
             else if(reviewStatObj != null && review.AuthorId != userID)
             {
                 reviewStatObj.UserLiked = !reviewStatObj.UserLiked;
+                var likeStat = _db.LikesAmounts.FirstOrDefault(stat => stat.UserId == authorID);
+                if (reviewStatObj.UserLiked)
+                {
+                    likeStat.Likes++;
+                }
+                else
+                {
+                    likeStat.Likes--;
+
+                }
             }
             _db.SaveChanges();
+
             Response.Redirect($"/Home/WatchingReview/?reviewId={reviewID}&userId={userID}");
         }
         public void RateReview(int reviewID, string userID, int rating)
         {
+            Response.Redirect($"/Home/WatchingReview/?reviewId={reviewID}&userId={userID}");
+
             var reviewStatObj = _db.ReviewStats.FirstOrDefault(stat => stat.UserId == userID && stat.ReviewId == reviewID);
             var review = _db.Reviews.First(rev => rev.Id == reviewID);
             if (reviewStatObj == null && review.AuthorId != userID)
@@ -60,7 +92,6 @@ namespace Couresework.Controllers
             }
             UsersRatingUpd(reviewID);
             _db.SaveChanges();
-            Response.Redirect($"/Home/WatchingReview/?reviewId={reviewID}&userId={userID}");
         }
 
         private void UsersRatingUpd(int reviewID)
@@ -74,6 +105,34 @@ namespace Couresework.Controllers
             averageRating /= rates.Length;
             var review = _db.Reviews.FirstOrDefault(revID => revID.Id == reviewID);
             review.UsersRate = averageRating;
+        }
+        private void UsersLikesUpd(int reviewID, string authorID)
+        {
+            int totalLikes = 0;
+            var stats = _db.ReviewStats.Join(_db.Reviews, // второй набор
+            u => u.ReviewId, // свойство-селектор объекта из первого набора
+            c => c.Id, // свойство-селектор объекта из второго набора
+            (u, c) => new // результат
+            {
+                userLiked = u.UserLiked,
+                AuthorID = c.AuthorId
+            }).Where(u => u.AuthorID == authorID && u.userLiked == true).ToArray();
+            //var stats = _db.ReviewStats.ToArray();
+            if (stats != null)
+            {
+                totalLikes = stats.Length;
+            }
+            if (_db.LikesAmounts.FirstOrDefault(stat => stat.UserId == authorID) == null)
+            {
+                var likeStat = new LikesAmount{ UserId = authorID};
+                likeStat.Likes = totalLikes;
+                _db.Add(likeStat);
+            }
+            else
+            {
+                var likeStat = _db.LikesAmounts.FirstOrDefault(stat => stat.UserId == authorID);
+                likeStat.Likes = totalLikes;
+            }
         }
     }
 }

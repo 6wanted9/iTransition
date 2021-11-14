@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Couresework.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -173,18 +173,37 @@ namespace Couresework.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "LikesAmounts",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false),
+                    Likes = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LikesAmounts", x => x.UserId);
+                    table.ForeignKey(
+                        name: "FK_LikesAmounts_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ReviewStats",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
                     ReviewId = table.Column<int>(nullable: false),
                     UserId = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false),
                     UserRated = table.Column<int>(nullable: false),
                     UserLiked = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ReviewStats", x => new { x.Id, x.ReviewId, x.UserId });
+                    table.PrimaryKey("PK_ReviewStats", x => new { x.ReviewId, x.UserId });
                     table.ForeignKey(
                         name: "FK_ReviewStats_Reviews_ReviewId",
                         column: x => x.ReviewId,
@@ -239,11 +258,6 @@ namespace Couresework.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReviewStats_ReviewId",
-                table: "ReviewStats",
-                column: "ReviewId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ReviewStats_UserId",
                 table: "ReviewStats",
                 column: "UserId");
@@ -265,6 +279,9 @@ namespace Couresework.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "LikesAmounts");
 
             migrationBuilder.DropTable(
                 name: "ReviewStats");

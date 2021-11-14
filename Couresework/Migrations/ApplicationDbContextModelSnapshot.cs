@@ -19,6 +19,22 @@ namespace Couresework.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Couresework.Models.LikesAmount", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Likes")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("LikesAmounts");
+                });
+
             modelBuilder.Entity("Couresework.Models.Review", b =>
                 {
                     b.Property<int>("Id")
@@ -54,14 +70,14 @@ namespace Couresework.Migrations
 
             modelBuilder.Entity("Couresework.Models.ReviewStat", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.Property<int>("ReviewId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<bool>("UserLiked")
                         .HasColumnType("bit");
@@ -69,9 +85,7 @@ namespace Couresework.Migrations
                     b.Property<int>("UserRated")
                         .HasColumnType("int");
 
-                    b.HasKey("Id", "ReviewId", "UserId");
-
-                    b.HasIndex("ReviewId");
+                    b.HasKey("ReviewId", "UserId");
 
                     b.HasIndex("UserId");
 
@@ -289,6 +303,15 @@ namespace Couresework.Migrations
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
                     b.HasDiscriminator().HasValue("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Couresework.Models.LikesAmount", b =>
+                {
+                    b.HasOne("Couresework.Models.AspNetUsers", "AspNetUsers")
+                        .WithOne("LikesAmount")
+                        .HasForeignKey("Couresework.Models.LikesAmount", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Couresework.Models.ReviewStat", b =>

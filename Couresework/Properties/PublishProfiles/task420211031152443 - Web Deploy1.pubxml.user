@@ -7,6 +7,7 @@
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAZFbpBLcqtEmuL1UfeXyrqwAAAAACAAAAAAAQZgAAAAEAACAAAAC4UL40yffsdq0YEMD/TGSq7rgqnSI2wYTZqVj4fuL3FgAAAAAOgAAAAAIAACAAAACW6GgHA/RcTSXqVPkY255TuEPBLaKxlhcDvIbWp4ZYLIAAAADupVA6phiW7qGMngBjabI24l5unqcekopECt0zb0ZK0G/xDP1XyiIVq3yhNO5pu9CyeYQLc/8uw/MnDl/yFUwuePs3PIXyQXop/LitkEfWFwEdeg6FS9RCcvfjxYmdEFIRWagUANLf9c998PQfcSkV450r82hNsIlQgyT8zWiaTkAAAACRsiJZqw/xOHL5nvJpigpEh5JS+ZSzZZJb+HE8fSeA+9AKlASt2srnbynnoZjOWSh9pBZmH7iY3UUaxkWG8+tc</EncryptedPassword>
+    <History>True|2021-11-14T16:18:28.2591717Z;</History>
   </PropertyGroup>
   <ItemGroup>
     <AzureDBConnectionStrings Include="Data Source=tcp:task4dbserveritransition.database.windows.net,1433;Initial Catalog=task4_db;User Id=wanted@task4dbserveritransition;Password=+380973907047DK" />
