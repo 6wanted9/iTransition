@@ -1,42 +1,71 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using Couresework.Data
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Localization
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+@inject ApplicationDbContext db
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<MultiLanguage> langLocalizer
 @model Review
 
+<script type="module">
+    import Tags from "https://cdn.jsdelivr.net/npm/bootstrap5-tags@1/tags.min.js";
+    Tags.init();
+</script>
 
 @{
     ViewData["Title"] = "Home Page";
 }
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var userRole = (IdentityRole)ViewData["userRole"];
+}
+@{
+    string theme = "light";
 
+    if(Context.Request.Cookies.ContainsKey("theme"))
+    {
+        if(Context.Request.Cookies["theme"] == "dark")
+        {
+            theme = "dark";
+        }
+        
+    }
 }
 <div>
-    @if (SignInManager.IsSignedIn(User) && (Convert.ToString(ViewData["authorId"]) == UserManager.GetUserId(User) || userRole.Name == "Admin"))
+    @{
+        var userId = UserManager.GetUserId(User);
+        var isAdmin = db.UserRoles.FirstOrDefault(obj => obj.UserId == userId && obj.RoleId == "0");
+    }
+    @if (SignInManager.IsSignedIn(User) && (Convert.ToString(ViewData["authorId"]) == UserManager.GetUserId(User) || isAdmin != null))
     {
         var review = (Review)ViewData["review"];
         if (review != null)
         {
             <form asp-action="EditReview" asp-controller="ReviewManipulating" asp-route-reviewId="@review.Id" asp-route-userId="@UserManager.GetUserId(User)" asp-antiforgery="true" runat="server" class="needs-validation" novalidate>
                 <div class="form-floating mb-3 needs-validation" novalidate>
-                    <input type="text" class="form-control" placeholder="Leave a comment here" id="validationCustom01" required asp-for="Name" value="@review.Name"/>
-                    <label for="validationCustom01" asp-for="Name"></label>
+                    <input type="text" class="form-control @theme" placeholder="Leave a comment here" id="validationCustom01" required asp-for="Name" value="@review.Name" />
+                    <label for="validationCustom01">@langLocalizer["Topic"]</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" placeholder="Leave a comment here" id="validationCustom02" required asp-for="Group" />
-                    <label for="validationCustom02" asp-for="Group"></label>
+                    <input type="text" class="form-control @theme" placeholder="Leave a comment here" id="validationCustom02" required asp-for="Group" />
+                    <label for="validationCustom02">@langLocalizer["Group"]</label>
+                </div>
+                <div class="mb-3">
+                    <select class="form-select" id="validationCustom03 @theme" placeholder=@langLocalizer["RevTags"] name="tags[]" data-allow-clear="true" multiple data-allow-new="true" asp-for="Tags">
+
+                        @foreach (var item in TagsRepository.Tags)
+                        {
+                            <option value="@item">@item</option>
+                        }
+                    </select>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" placeholder="Leave a comment here" id="validationCustom03" required asp-for="Tags" />
-                    <label for="validationCustom03" asp-for="Tags"></label>
+                    <textarea class="form-control @theme" placeholder="Leave a comment here" id="validationCustom04" required style="height: 100px" asp-for="ReviewText"></textarea>
+                    <label for="validationCustom04">@langLocalizer["Review"]</label>
                 </div>
-                <div class="form-floating mb-3">
-                    <textarea class="form-control" placeholder="Leave a comment here" id="validationCustom04" required style="height: 100px" asp-for="ReviewText"></textarea>
-                    <label for="validationCustom04">Review</label>
-                </div>
-                <select class="form-select mb-3" id="validationCustom05" asp-for="Rating" required>
-                    <option selected disabled value="">Rating</option>
+                <select class="form-select mb-3 @theme" id="validationCustom05" asp-for="Rating" required>
+                    <option selected disabled value="">@langLocalizer["Rating"]</option>
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
@@ -48,8 +77,8 @@
                     <option>9</option>
                     <option>10</option>
                 </select>
-                <div class="form-floating">
-                    <button type="submit" class="btn btn-outline-primary">Sumbit</button>
+                <div class="form-floating @theme">
+                    <button type="submit" class="btn btn-outline-primary">@langLocalizer["Sumbit"]</button>
                 </div>
             </form>
         }

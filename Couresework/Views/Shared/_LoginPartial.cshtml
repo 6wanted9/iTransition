@@ -1,8 +1,23 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using Couresework.Data
+@using Microsoft.AspNetCore.Mvc.Localization
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 @inject ApplicationDbContext db
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<MultiLanguage> langLocalizer
+@{
+    string theme = "dark";
+
+    if(Context.Request.Cookies.ContainsKey("theme"))
+    {
+        if(Context.Request.Cookies["theme"] == "dark")
+        {
+            theme = "light";
+        }
+        
+    }
+}
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
@@ -15,35 +30,34 @@
         {
             likes = db.LikesAmounts.FirstOrDefault(stat => stat.UserId == UserManager.GetUserId(User)).Likes;
         }
-        <li class="nav-item">
-            <a class="nav-link text-dark"> @likes</a>
-        </li>
-        <li class="nav-item d-flex flex-column justify-content-center">
+
+        <li class="nav-item d-flex flex-row justify-content-start align-items-center">
+            <a class="nav-link text-@theme"> @likes</a>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
             </svg>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" title="Manage" asp-action="ManageAccount" asp-controller="Home" asp-route-userID="@UserManager.GetUserId(User)">@User.Identity.Name</a>
+            <a class="nav-link text-@theme" title="Manage" asp-action="ManageAccount" asp-controller="Home" asp-route-userID="@UserManager.GetUserId(User)">@User.Identity.Name</a>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                <button type="submit" class="nav-link btn btn-link text-@theme">@langLocalizer["HeaderLogout"]</button>
             </form>
         </li>
     }
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            <a class="nav-link text-@theme" asp-area="Identity" asp-page="/Account/Register">@langLocalizer["HeaderRegister"]</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a class="nav-link text-@theme" asp-area="Identity" asp-page="/Account/Login">@langLocalizer["HeaderLogin"]</a>
         </li>
     }
     <li class="nav-item">
-        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button type="submit" class="nav-link btn btn-link text-dark">SEARCH</button>
+        <form class="form-inline" asp-area="" asp-page="" asp-route-returnUrl="">
+            <button type="submit" class="nav-link btn btn-link text-@theme">@langLocalizer["HeaderSearch"]</button>
         </form>
     </li>
 </ul>

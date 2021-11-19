@@ -83,3 +83,17 @@ body {
     justify-content: center;
     margin: 100px;
 }
+
+.dark,
+.dark:focus,
+.dark::placeholder,
+.dark:active
+.dark::before,
+.dark::after{
+    background-color: #212529;
+    border-color: #495057;
+    color: whitesmoke;
+}
+select[multiple] option {
+    white-space: normal;
+}

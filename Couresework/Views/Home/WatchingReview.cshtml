@@ -2,9 +2,13 @@
 @using Westwind.AspNetCore.Markdown;
 @using Couresework.Data;
 @using Couresework.Models;
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Localization
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 @inject ApplicationDbContext DB
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<MultiLanguage> langLocalizer
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -13,18 +17,18 @@
 }
 <div class="container">
     <div class="border border-gray rounded m-3">
-        <p class="mb-2 ms-2 mt-2"><b>Topic:</b> @Model.Name</p>
-        <p class="mb-2 ms-2"><b>Group:</b> @Model.Group</p>
-        <p class="mb-2 ms-2"><b>Tags:</b> @Model.Tags</p>
+        <p class="mb-2 ms-2 mt-2"><b>@langLocalizer["Topic"]:</b> @Model.Name</p>
+        <p class="mb-2 ms-2"><b>@langLocalizer["Group"]:</b> @Model.Group</p>
+        <p class="mb-2 ms-2"><b>@langLocalizer["RevTags"]:</b> @Model.Tags</p>
     </div>
     <div class="border border-primary rounded ps-2 mt-3 me-3 ms-3">
-        <p><b>Review:</b></p>
+        <p><b>@langLocalizer["Review"]:</b></p>
     </div>
     <div class="border border-primary rounded ps-2 mt-1 mb-3 me-3 ms-3">
         <p>@Markdown.ParseHtmlString(String.Join("<br>", Model.ReviewText.Split("\n")))</p>
     </div>
     <div class="border border-gray rounded m-3">
-        <p class="mb-2 ms-2 mt-2"><b>Rating:</b> @Model.Rating/10</p>
+        <p class="mb-2 ms-2 mt-2"><b>@langLocalizer["Rating"]:</b> @Model.Rating/10</p>
     </div>
     @if (SignInManager.IsSignedIn(User))
     {
@@ -44,7 +48,7 @@
                                 <option>4</option>
                                 <option>5</option>
                             </select>
-                            <button class="btn btn-outline-primary" type="submit">RATE</button>
+                            <button class="btn btn-outline-primary" type="submit">@langLocalizer["RATE"]</button>
                         </div>
                     </form>
                 </div>
@@ -60,7 +64,7 @@
                     }
                 }
                 <div class="border border-primary rounded bg-primary text-white text-center align-self-stretch d-flex flex-column justify-content-center">
-                    <p class="text-center m-2"><b>Users rate:</b> @rateValue</p>
+                    <p class="text-center m-2"><b>@langLocalizer["Users rate"]:</b> @rateValue</p>
                 </div>
             </div>
         }

@@ -25,9 +25,6 @@ namespace Couresework.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<ReviewStat>()
-               .HasKey(t => t.Id );
-
-            modelBuilder.Entity<ReviewStat>()
                 .HasKey(t => new { t.ReviewId, t.UserId });
 
             modelBuilder.Entity<ReviewStat>()
@@ -39,9 +36,6 @@ namespace Couresework.Data
                 .HasOne(pt => pt.AspNetUsers)
                 .WithMany(t => t.ReviewStats)
                 .HasForeignKey(pt => pt.UserId);
-
-            modelBuilder.Entity<LikesAmount>()
-                .HasKey(t => t.Id);
 
             modelBuilder.Entity<LikesAmount>()
                 .HasKey(t => new { t.UserId });

@@ -25,7 +25,9 @@ namespace Couresework.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Likes")
                         .HasColumnType("int");
@@ -77,7 +79,9 @@ namespace Couresework.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("UserLiked")
                         .HasColumnType("bit");

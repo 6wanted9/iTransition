@@ -1,0 +1,41 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Couresework.Data
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Localization
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject ApplicationDbContext db
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<MultiLanguage> langLocalizer
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div>
+    @{
+        var userId = UserManager.GetUserId(User);
+        var isAdmin = db.UserRoles.FirstOrDefault(obj => obj.UserId == userId && obj.RoleId == "0");
+    }
+    @if (SignInManager.IsSignedIn(User) && (Convert.ToString(ViewData["authorId"]) == UserManager.GetUserId(User) || isAdmin != null))
+    {
+        var review = (Review)ViewData["review"];
+        if (review != null)
+        {
+            <form asp-action="DeleteReview" asp-controller="ReviewManipulating" asp-route-reviewId="@review.Id" asp-route-userId="@UserManager.GetUserId(User)" asp-antiforgery="true" runat="server" class="needs-validation" novalidate>
+                <b>@langLocalizer["DeletingReview"]</b>
+                <div class="form-floating">
+                    <button type="submit" class="btn btn-outline-danger">@langLocalizer["Yes"]</button>
+                </div>
+            </form>
+        }
+    }
+    else
+    {
+        <div class="main-part">
+            <a>Access Declined</a>
+        </div>
+    }
+</div>

@@ -1,0 +1,41 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Couresework.Data
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Localization
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject ApplicationDbContext db
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<MultiLanguage> langLocalizer
+@{
+    ViewData["Title"] = "Home Page";
+
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    @{
+        var userId = UserManager.GetUserId(User);
+        var isAdmin = db.UserRoles.FirstOrDefault(obj => obj.UserId == userId && obj.RoleId == "0");
+    }
+    @if (SignInManager.IsSignedIn(User) && isAdmin != null)
+    {
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <form asp-action="ManageAccount" asp-controller="Home" asp-route-userID="@item.Id">
+                    <div class="border border-gray rounded m-3 d-flex flex-row justify-content-between">
+                        <div class="d-flex flex-column justify-content-start">
+                            <p class="ms-2 mt-2"><b>@langLocalizer["User Id"]:</b> @item.Id</p>
+                            <p class="ms-2"><b>@langLocalizer["User Name"]:</b> @item.UserName</p>
+                        </div>
+                        <button type="submit" class="btn btn-outline-primary" value="Watch User">@langLocalizer["Watch User"]</button>
+                    </div>
+                </form>
+
+            }
+        }
+    }
+</div>

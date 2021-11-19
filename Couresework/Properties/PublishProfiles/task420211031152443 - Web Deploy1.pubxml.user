@@ -7,7 +7,7 @@
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAZFbpBLcqtEmuL1UfeXyrqwAAAAACAAAAAAAQZgAAAAEAACAAAAC4UL40yffsdq0YEMD/TGSq7rgqnSI2wYTZqVj4fuL3FgAAAAAOgAAAAAIAACAAAACW6GgHA/RcTSXqVPkY255TuEPBLaKxlhcDvIbWp4ZYLIAAAADupVA6phiW7qGMngBjabI24l5unqcekopECt0zb0ZK0G/xDP1XyiIVq3yhNO5pu9CyeYQLc/8uw/MnDl/yFUwuePs3PIXyQXop/LitkEfWFwEdeg6FS9RCcvfjxYmdEFIRWagUANLf9c998PQfcSkV450r82hNsIlQgyT8zWiaTkAAAACRsiJZqw/xOHL5nvJpigpEh5JS+ZSzZZJb+HE8fSeA+9AKlASt2srnbynnoZjOWSh9pBZmH7iY3UUaxkWG8+tc</EncryptedPassword>
-    <History>True|2021-11-14T16:18:28.2591717Z;</History>
+    <History>True|2021-11-17T21:16:45.9840650Z;True|2021-11-16T23:42:04.4340061+02:00;True|2021-11-16T22:40:30.8967002+02:00;False|2021-11-16T22:39:34.2916244+02:00;True|2021-11-16T13:06:27.6432674+02:00;True|2021-11-15T17:02:27.6812604+02:00;True|2021-11-15T16:51:38.5814738+02:00;False|2021-11-15T16:50:41.2151001+02:00;True|2021-11-14T18:18:28.2591717+02:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <AzureDBConnectionStrings Include="Data Source=tcp:task4dbserveritransition.database.windows.net,1433;Initial Catalog=task4_db;User Id=wanted@task4dbserveritransition;Password=+380973907047DK" />
