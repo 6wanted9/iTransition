@@ -7,13 +7,13 @@
 @inject IViewLocalizer Localizer
 @inject IHtmlLocalizer<MultiLanguage> langLocalizer
 @{
-    string theme = "dark";
+    string theme = "light";
 
     if(Context.Request.Cookies.ContainsKey("theme"))
     {
         if(Context.Request.Cookies["theme"] == "dark")
         {
-            theme = "light";
+            theme = "dark";
         }
         
     }
@@ -32,13 +32,13 @@
         }
 
         <li class="nav-item d-flex flex-row justify-content-start align-items-center">
-            <a class="nav-link text-@theme"> @likes</a>
+            <a class="nav-link @theme"> @likes</a>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
             </svg>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-@theme" title="Manage" asp-action="ManageAccount" asp-controller="Home" asp-route-userID="@UserManager.GetUserId(User)">@User.Identity.Name</a>
+            <a class="nav-link @theme" title="Manage" asp-action="ManageAccount" asp-controller="Home" asp-route-userID="@UserManager.GetUserId(User)">@User.Identity.Name</a>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
@@ -55,9 +55,18 @@
             <a class="nav-link text-@theme" asp-area="Identity" asp-page="/Account/Login">@langLocalizer["HeaderLogin"]</a>
         </li>
     }
-    <li class="nav-item">
-        <form class="form-inline" asp-area="" asp-page="" asp-route-returnUrl="">
-            <button type="submit" class="nav-link btn btn-link text-@theme">@langLocalizer["HeaderSearch"]</button>
+    <li class="nav-item @theme">
+        <form class="form-inline" asp-action="Search" asp-controller="Home">
+            <div class="input-group flex-nowrap @theme">
+                <div class="form-outline @theme">
+                    <input type="search" class="form-control @theme" rounded-end-0 placeholder="@langLocalizer["HeaderSearch"]" name="searchStr"/>
+                </div>
+                <button type="submit" class="btn btn-outline-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg>
+                </button>
+            </div>
         </form>
     </li>
 </ul>

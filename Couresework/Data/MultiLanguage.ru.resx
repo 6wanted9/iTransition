@@ -126,6 +126,9 @@
   <data name="DeletingReview" xml:space="preserve">
     <value>Вы уверены что хотите удалить Ваш обзор?</value>
   </data>
+  <data name="Didn't found" xml:space="preserve">
+    <value>Не найдено</value>
+  </data>
   <data name="Edit Review" xml:space="preserve">
     <value>Редактировать Обзор</value>
   </data>

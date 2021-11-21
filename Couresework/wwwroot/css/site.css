@@ -89,7 +89,8 @@ body {
 .dark::placeholder,
 .dark:active,
 .dark::before,
-.dark::after{
+.dark::after,
+.dark::placeholder{
     background-color: #212529 !important;
     border-color: #495057;
     color: whitesmoke;

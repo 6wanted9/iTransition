@@ -85,7 +85,7 @@
                     <ul>
                         @foreach (var item in TagsRepository.Tags)
                         {
-                           <li><a class="@theme" href="#"><span>@item</span></a></li>
+                           <li><a class="@theme" href="@Url.Action("Search", "Home", new{ searchStr = @item}, null)"><span>@item</span></a></li>
                         }
                     </ul>
                 </div>

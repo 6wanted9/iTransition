@@ -126,6 +126,9 @@
   <data name="DeletingReview" xml:space="preserve">
     <value>Are you sure you want to delete your review?</value>
   </data>
+  <data name="Didn't found" xml:space="preserve">
+    <value>Didn't found</value>
+  </data>
   <data name="Edit Review" xml:space="preserve">
     <value>Edit Review</value>
   </data>

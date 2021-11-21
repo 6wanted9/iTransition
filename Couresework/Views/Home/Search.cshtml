@@ -1,0 +1,65 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Localization
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<MultiLanguage> langLocalizer
+@{
+    ViewData["Title"] = "Home Page";
+
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var loc = langLocalizer["Latest reviews"].Value;
+    var reviews = ViewData["searchData"] as List<Review>;
+}
+@{
+    string theme = "light";
+
+    if(Context.Request.Cookies.ContainsKey("theme"))
+    {
+        if(Context.Request.Cookies["theme"] == "dark")
+        {
+            theme = "dark";
+        }
+        
+    }
+}
+<div class="container">
+    @if (SignInManager.IsSignedIn(User))
+    {
+    }
+    
+    @if (reviews != null)
+    {
+        @foreach (var item in reviews)
+        {
+        <form asp-action="WatchingReview" asp-controller="Home" asp-route-reviewId="@item.Id" asp-route-userId="@UserManager.GetUserId(User)">
+            <div class="shadow rounded m-3 d-flex flex-row justify-content-between @theme">
+                <div class="d-flex flex-column justify-content-start">
+                    <p class="ms-2 mt-2"><b>@langLocalizer["Topic"]:</b> @item.Name</p>
+                    @{
+                        string rateValue;
+                        if (item.UsersRate == 0)
+                        {
+                            rateValue = "None";
+                        }
+                        else
+                        {
+                            rateValue = $"{item.UsersRate}/5";
+                        }
+                    }
+                    <p class="ms-2"><b>@langLocalizer["Users rate"]:</b> @rateValue</p>
+                </div>
+                <button type="submit" class="btn btn-outline-primary shadow" value="Watch Review">@langLocalizer["Watch Review"]</button>
+            </div>
+            </form>
+        }
+    }
+    else
+    {
+        <p>@langLocalizer["Didn't found"]</p>
+    }
+
+</div>

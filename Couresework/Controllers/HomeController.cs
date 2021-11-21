@@ -155,6 +155,28 @@ namespace Couresework.Controllers
             }
         }
 
+        public async Task<IActionResult> Search(string searchStr, string tag)
+        {
+            if (searchStr != null)
+            {
+                var reviews = await _db.Reviews.Where(review => review.Group.Contains(searchStr) || review.Name.Contains(searchStr) || review.ReviewText.Contains(searchStr) || review.Tags.Contains(searchStr)).OrderByDescending(review => review.Id).ToListAsync();
+                if (reviews.Count != 0)
+                    ViewData["searchData"] = reviews;
+                return View();
+            }
+            else if(tag != null)
+            {
+                var reviews = await _db.Reviews.Where(review => review.Tags.Contains(searchStr)).OrderByDescending(review => review.Id).ToListAsync();
+                if(reviews.Count != 0)
+                    ViewData["searchData"] = reviews;
+                return View();
+            }
+            else
+            {
+                return Redirect("/");
+            }
+        }
+
         [Authorize]
         public IActionResult AdminPanel()
         {
