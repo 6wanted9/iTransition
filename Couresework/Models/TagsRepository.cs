@@ -15,7 +15,7 @@ namespace Couresework.Models
             {
                 if (review.Tags.Contains(","))
                 {
-                    var newTags = review.Tags.Split(",").ToList();
+                    var newTags = review.Tags.Split(",").Where(item => item != null).ToList();
                     Tags.AddRange(newTags);
                 }
                 else
@@ -24,6 +24,7 @@ namespace Couresework.Models
                 }
             }
             Tags = Tags.Distinct().ToList();
+            Tags.Sort();
         }
         public static void Initial(ApplicationDbContext db)
         {
@@ -35,12 +36,13 @@ namespace Couresework.Models
                     var newTags = review.Tags.Split(",").ToList();
                     Tags.AddRange(newTags);
                 }
-                else
+                else if(review.Tags != null)
                 {
                     Tags.Add(review.Tags);
                 }
             }
             Tags = Tags.Distinct().ToList();
+            Tags.Sort();
         }
     }
 }

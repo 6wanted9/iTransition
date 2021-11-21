@@ -46,7 +46,7 @@
 </head>
 <body class="@theme">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-@theme bg-@theme border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-@theme bg-@theme border-bottom @theme box-shadow mb-3">
             <div class="align-middle ms-2">
                 <form asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@String.Concat(Context.Request.Path,Context.Request.QueryString)" method="post" class="align-middle">
                     <select name="culture" class="form-select form-select-sm align-middle @theme" onchange="this.form.submit();"
@@ -86,7 +86,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted @theme">
         <div class="container">
             &copy; Choose your side!
         </div>

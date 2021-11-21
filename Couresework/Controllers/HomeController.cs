@@ -47,7 +47,7 @@ namespace Couresework.Controllers
             else
             {
                 ViewData["contentTypeSort"] = _multiLocalizer["TAGs"].Value;
-                return View();
+                return View(await _db.Reviews.ToListAsync());
             }
         }
         [Authorize]
@@ -101,7 +101,8 @@ namespace Couresework.Controllers
             {
                 var reviewStat = _db.ReviewStats.FirstOrDefault(stat => stat.UserId == userId && stat.ReviewId == reviewId);
                 string likeVal;
-                string rateVal;
+                string rateMsg;
+                int rateVal;
                 if ((reviewStat != null && reviewStat.UserLiked != true) || reviewStat == null)
                     likeVal = "Like";
                 else
@@ -109,10 +110,14 @@ namespace Couresework.Controllers
                 ViewData["likeVal"] = likeVal;
                 //
                 if (reviewStat != null && reviewStat.UserRated != 0)
-                    rateVal = $"Rerate.Current: {reviewStat.UserRated}";
+                {
+                    rateMsg = "Rerate.Current:";
+                    rateVal = reviewStat.UserRated;
+                    ViewData["rateVal"] = rateVal;
+                }
                 else
-                    rateVal = "Rate this review";
-                ViewData["rateVal"] = rateVal;
+                    rateMsg = "Rate this review";
+                ViewData["rateMsg"] = rateMsg;
             }
             return View(review);
         }

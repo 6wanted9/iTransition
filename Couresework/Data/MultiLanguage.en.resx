@@ -153,14 +153,29 @@
   <data name="Latest reviews" xml:space="preserve">
     <value>Latest reviews</value>
   </data>
+  <data name="Like" xml:space="preserve">
+    <value>Like</value>
+  </data>
   <data name="New Review" xml:space="preserve">
     <value>New Review</value>
   </data>
   <data name="Popular reviews" xml:space="preserve">
     <value>Popular reviews</value>
   </data>
+  <data name="RATE" xml:space="preserve">
+    <value>RATE</value>
+  </data>
+  <data name="Rate this review" xml:space="preserve">
+    <value>Rate this review</value>
+  </data>
   <data name="Rating" xml:space="preserve">
     <value>Rating</value>
+  </data>
+  <data name="Remove Like" xml:space="preserve">
+    <value>Remove Like</value>
+  </data>
+  <data name="Rerate.Current:" xml:space="preserve">
+    <value>Rerate.Current:</value>
   </data>
   <data name="Review" xml:space="preserve">
     <value>Review</value>

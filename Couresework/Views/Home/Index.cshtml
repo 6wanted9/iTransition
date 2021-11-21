@@ -30,9 +30,9 @@
     {
     }
     <div class="d-flex flex-column justify-content-center">
-        <form asp-action="Index" asp-controller="Home" asp-antiforgery="true" runat="server" class="needs-validation" novalidate>
+        <form asp-action="Index" asp-controller="Home" asp-antiforgery="true" runat="server">
             <div class="m-3 d-flex flex-row justify-content-center">
-                <select class="form-select @theme" id="validationCustom01" name="contentTypeSort" required>
+                <select class="form-select @theme" id="validationCustom01" name="contentTypeSort">
                     <option selected disabled value="">@Convert.ToString(ViewData["contentTypeSort"])</option>
                     @if (Convert.ToString(ViewData["contentTypeSort"]) != langLocalizer["Latest reviews"].Value)
                     {
@@ -53,10 +53,12 @@
     </div>
     @if (Model != null)
     {
-        foreach (var item in Model)
+        @if(ViewData["contentTypeSort"] == null || Convert.ToString(ViewData["contentTypeSort"]) == langLocalizer["Latest reviews"].Value || Convert.ToString(ViewData["contentTypeSort"]) == langLocalizer["Popular reviews"].Value)
         {
+            @foreach (var item in Model)
+            {
             <form asp-action="WatchingReview" asp-controller="Home" asp-route-reviewId="@item.Id" asp-route-userId="@UserManager.GetUserId(User)">
-                <div class="border border-gray rounded m-3 d-flex flex-row justify-content-between @theme">
+                <div class="shadow rounded m-3 d-flex flex-row justify-content-between @theme">
                     <div class="d-flex flex-column justify-content-start">
                         <p class="ms-2 mt-2"><b>@langLocalizer["Topic"]:</b> @item.Name</p>
                         @{
@@ -72,10 +74,21 @@
                         }
                         <p class="ms-2"><b>@langLocalizer["Users rate"]:</b> @rateValue</p>
                     </div>
-                    <button type="submit" class="btn btn-outline-primary" value="Watch Review">@langLocalizer["Watch Review"]</button>
+                    <button type="submit" class="btn btn-outline-primary shadow" value="Watch Review">@langLocalizer["Watch Review"]</button>
                 </div>
-            </form>
-
+                </form>
+            }
+        }
+        else
+        {
+                <div class="tagcloud container">
+                    <ul>
+                        @foreach (var item in TagsRepository.Tags)
+                        {
+                           <li><a class="@theme" href="#"><span>@item</span></a></li>
+                        }
+                    </ul>
+                </div>
         }
     }
 

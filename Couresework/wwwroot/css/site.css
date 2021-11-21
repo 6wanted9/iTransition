@@ -87,13 +87,93 @@ body {
 .dark,
 .dark:focus,
 .dark::placeholder,
-.dark:active
+.dark:active,
 .dark::before,
 .dark::after{
-    background-color: #212529;
+    background-color: #212529 !important;
     border-color: #495057;
     color: whitesmoke;
 }
 select[multiple] option {
     white-space: normal;
+}
+
+.tag {
+    height: 42px;
+    line-height: 42px;
+    border-radius: 21px;
+}
+/*--------------------------------------------------------*/
+.tagcloud ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.tagcloud ul li {
+	display: inline-block;
+	margin: 0 0 .3em 1em;
+	padding: 0;
+}
+.tagcloud ul li a,
+.tagcloud ul li a.dark{
+	position: relative;
+	display: inline-block;
+	height: 30px;
+	line-height: 30px;
+	padding: 0 1em 0 .75em;
+	background-color: #3498db !important;
+	border-radius: 0 3px 3px 0;
+	color: #fff;
+	font-size: 13px;
+	text-decoration: none;
+	-webkit-transition: .2s;
+	transition: .2s;
+}
+.tagcloud ul li a::before,
+.tagcloud ul li a.dark::before{
+	position: absolute;
+	top: 0;
+	left: -15px;
+	z-index: -1;
+	content: '';
+	width: 30px;
+	height: 30px;
+	background-color: #3498db !important;
+	border-radius: 50%;
+	-webkit-transition: .2s;
+	transition: .2s;
+}
+.tagcloud ul li a::after,
+.tagcloud ul li a.dark::after{
+	position: absolute;
+	top: 50%;
+	left: -6px;
+	z-index: 2;
+	display: block;
+	content: '';
+	width: 6px;
+	height: 6px;
+	margin-top: -3px;
+	background-color: #fff !important;
+	border-radius: 100%;
+}
+.tagcloud ul li a.dark::after{
+	background-color: #212529 !important;
+}
+.tagcloud ul li span,
+.tagcloud ul li a.dark span{
+	display: block;
+	max-width: 100px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.tagcloud ul li a:hover,
+.tagcloud ul li a.dark:hover{
+	background-color: #555 !important;
+	color: #fff !important;
+}
+.tagcloud ul li a:hover::before,
+.tagcloud ul li a.dark:hover::before{
+	background-color: #555 !important;
 }

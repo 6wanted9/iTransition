@@ -153,14 +153,29 @@
   <data name="Latest reviews" xml:space="preserve">
     <value>Последние обзоры</value>
   </data>
+  <data name="Like" xml:space="preserve">
+    <value>Лайк</value>
+  </data>
   <data name="New Review" xml:space="preserve">
     <value>Новый обзор</value>
   </data>
   <data name="Popular reviews" xml:space="preserve">
     <value>Популярные обзоры</value>
   </data>
+  <data name="RATE" xml:space="preserve">
+    <value>Оценить</value>
+  </data>
+  <data name="Rate this review" xml:space="preserve">
+    <value>Оцените этот обзор</value>
+  </data>
   <data name="Rating" xml:space="preserve">
     <value>Рейтинг</value>
+  </data>
+  <data name="Remove Like" xml:space="preserve">
+    <value>Убрать лайк</value>
+  </data>
+  <data name="Rerate.Current:" xml:space="preserve">
+    <value>Изменить оценку:</value>
   </data>
   <data name="Review" xml:space="preserve">
     <value>Обзор</value>

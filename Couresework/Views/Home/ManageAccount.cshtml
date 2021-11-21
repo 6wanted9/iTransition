@@ -36,9 +36,9 @@
             <a class="btn btn-outline-primary" asp-action="CreatingReview" asp-controller="Home" asp-route-userId="@ViewData["userID"]" value="Create Review">@langLocalizer["New Review"]</a>
         </div>
         <div class="d-flex flex-column justify-content-center">
-            <form asp-action="ManageAccount" asp-controller="Home" asp-route-userID="@UserManager.GetUserId(User)" asp-antiforgery="true" runat="server" class="needs-validation" novalidate>
+            <form asp-action="ManageAccount" asp-controller="Home" asp-route-userID="@UserManager.GetUserId(User)" asp-antiforgery="true" runat="server">
                 <div class="m-3 d-flex flex-row justify-content-center">
-                    <select class="form-select @theme" id="validationCustom01" name="contentTypeSort" required>
+                    <select class="form-select @theme" id="validationCustom01" name="contentTypeSort">
                         <option>@Convert.ToString(ViewData["contentTypeSort"])</option>
                         @if (Convert.ToString(ViewData["contentTypeSort"]) != langLocalizer["Latest reviews"].Value)
                         {
@@ -57,11 +57,11 @@
                 </div>
             </form>
         </div>
-        @if (Model != null)
+        if (Model != null)
         {
             foreach (var item in Model)
             {
-                <div class="border border-gray rounded m-3 d-flex flex-row justify-content-between">
+                <div class="shadow rounded m-3 d-flex flex-row justify-content-between">
                     <div class="d-flex flex-column justify-content-start">
                         <p class="ms-2 mt-2"><b>@langLocalizer["Topic"]:</b> @item.Name</p>
                         @{
@@ -82,9 +82,9 @@
                         <p class="ms-2"><b>@langLocalizer["Users rate"]:</b> @rateValue</p>
                     </div>
                     <div class="d-flex flex-row justify-content-end align-items-stretch">
-                        <a type="button" class="btn btn-outline-primary me-1" value="Watch Review" asp-action="WatchingReview" asp-controller="Home" asp-route-reviewId="@item.Id" asp-route-userId="@UserManager.GetUserId(User)">@langLocalizer["Watch Review"]</a>
-                        <a type="button" class="btn btn-outline-success me-1" value="Edit Review" asp-action="EditingReview" asp-controller="Home" asp-route-reviewId="@item.Id" asp-route-userId="@UserManager.GetUserId(User)">@langLocalizer["Edit Review"]</a>
-                        <a type="button" class="btn btn-outline-danger" asp-action="DeletingReview" asp-controller="Home" asp-route-reviewId="@item.Id" asp-route-userId="@UserManager.GetUserId(User)">@langLocalizer["Delete Review"]</a>
+                        <a class="btn btn-outline-primary me-1 shadow" value="Watch Review" asp-action="WatchingReview" asp-controller="Home" asp-route-reviewId="@item.Id" asp-route-userId="@UserManager.GetUserId(User)">@langLocalizer["Watch Review"]</a>
+                        <a class="btn btn-outline-success me-1 shadow" value="Edit Review" asp-action="EditingReview" asp-controller="Home" asp-route-reviewId="@item.Id" asp-route-userId="@UserManager.GetUserId(User)">@langLocalizer["Edit Review"]</a>
+                        <a class="btn btn-outline-danger shadow" asp-action="DeletingReview" asp-controller="Home" asp-route-reviewId="@item.Id" asp-route-userId="@UserManager.GetUserId(User)">@langLocalizer["Delete Review"]</a>
                     </div>
                 </div>
             }
