@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Couresework.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211115173432_initial")]
-    partial class initial
+    [Migration("20211123131458_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,6 +50,9 @@ namespace Couresework.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Group")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImagesURLs")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")

@@ -153,6 +153,9 @@
   <data name="HeaderSearch" xml:space="preserve">
     <value>Поиск</value>
   </data>
+  <data name="Images" xml:space="preserve">
+    <value>Изображения</value>
+  </data>
   <data name="Latest reviews" xml:space="preserve">
     <value>Последние обзоры</value>
   </data>

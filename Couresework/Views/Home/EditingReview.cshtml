@@ -42,7 +42,7 @@
         var review = (Review)ViewData["review"];
         if (review != null)
         {
-            <form asp-action="EditReview" asp-controller="ReviewManipulating" asp-route-reviewId="@review.Id" asp-route-userId="@UserManager.GetUserId(User)" asp-antiforgery="true" runat="server" class="needs-validation" novalidate>
+            <form asp-action="EditReview" asp-controller="ReviewManipulating" asp-route-reviewId="@review.Id" asp-route-userId="@UserManager.GetUserId(User)" asp-antiforgery="true" runat="server" class="needs-validation" enctype="multipart/form-data" novalidate>
                 <div class="form-floating mb-3 needs-validation" novalidate>
                     <input type="text" class="form-control @theme" placeholder="Leave a comment here" id="validationCustom01" required asp-for="Name" value="@review.Name" />
                     <label for="validationCustom01">@langLocalizer["Topic"]</label>
@@ -53,7 +53,7 @@
                 </div>
                 <div class="mb-3">
                     <select class="form-select" id="validationCustom03 @theme" placeholder=@langLocalizer["RevTags"] name="tags[]" data-allow-clear="true" multiple data-allow-new="true" asp-for="Tags">
-
+                        <option disabled hidden>Default</option>
                         @foreach (var item in TagsRepository.Tags)
                         {
                             <option value="@item">@item</option>
@@ -63,6 +63,10 @@
                 <div class="form-floating mb-3">
                     <textarea class="form-control @theme" placeholder="Leave a comment here" id="validationCustom04" required style="height: 100px" asp-for="ReviewText"></textarea>
                     <label for="validationCustom04">@langLocalizer["Review"]</label>
+                </div>
+                <div class="mb-3">
+                  <label for="formFileMultiple" class="form-label">@langLocalizer["Images"]</label>
+                  <input class="form-control" type="file" id="formFileMultiple" asp-for="ImagesURLs" name="_imagesURLs" accept=".jpg, .jpeg, .png" value="@review.ImagesURLs.Split(",").ToList()" multiple>
                 </div>
                 <select class="form-select mb-3 @theme" id="validationCustom05" asp-for="Rating" required>
                     <option selected disabled value="">@langLocalizer["Rating"]</option>

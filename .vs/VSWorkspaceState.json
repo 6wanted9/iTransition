@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Couresework\\Controllers"
+    "\\Couresework",
+    "\\Couresework\\Controllers",
+    "\\Couresework\\Views",
+    "\\Couresework\\Views\\Home"
   ],
   "SelectedNode": "\\iTransition.sln",
   "PreviewInSolutionExplorer": false

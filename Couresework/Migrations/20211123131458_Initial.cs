@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Couresework.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -59,7 +59,8 @@ namespace Couresework.Migrations
                     ReviewText = table.Column<string>(nullable: true),
                     Rating = table.Column<int>(nullable: false),
                     AuthorId = table.Column<string>(nullable: true),
-                    UsersRate = table.Column<double>(nullable: false)
+                    UsersRate = table.Column<double>(nullable: false),
+                    ImagesURLs = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
