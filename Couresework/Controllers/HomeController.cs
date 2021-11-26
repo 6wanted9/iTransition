@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Http;
+using Dropbox.Api;
+using Dropbox.Api.Files;
 
 namespace Couresework.Controllers
 {
@@ -32,6 +34,8 @@ namespace Couresework.Controllers
             _localizer = localizer;
             _multiLocalizer = multiLocalizer;
         }
+        private DropboxClient dropboxClient = new DropboxClient("gy6HcdfPF2sAAAAAAAAAASK76w_lmXptJEM7lcBfiym9x1x6QBB7s-Db3TBz-uOd");
+
         public async Task<IActionResult> Index(string contentTypeSort)
         {
             if (contentTypeSort == _multiLocalizer["Latest reviews"].Value || contentTypeSort == null)
@@ -94,7 +98,7 @@ namespace Couresework.Controllers
             return View();
         }
         [Authorize]
-        public IActionResult WatchingReview(int reviewId, string userId)
+        public async Task<IActionResult> WatchingReview(int reviewId, string userId)
         {
             var review = _db.Reviews.Find(reviewId);
             if (userId != null)
@@ -118,6 +122,29 @@ namespace Couresework.Controllers
                 else
                     rateMsg = "Rate this review";
                 ViewData["rateMsg"] = rateMsg;
+            }
+            List<Metadata> images = new List<Metadata>();
+            try
+            {
+                await dropboxClient.Files.ListFolderAsync($"/{reviewId}");
+            }
+            catch (ApiException<ListFolderError> e)
+            {
+                if (e.ErrorResponse.IsPath && e.ErrorResponse.AsPath.Value.IsNotFound)
+                {
+                    images = null;
+                }
+            }
+            if (images != null)
+            {
+                images = dropboxClient.Files.ListFolderAsync($"/{reviewId}").Result.Entries.ToList();
+                List<string> imagesLinks = new List<string>();
+                foreach (var item in images)
+                {
+
+                    imagesLinks.Add(dropboxClient.Files.GetTemporaryLinkAsync(item.PathDisplay).Result.Link);
+                }
+                ViewData["imagesLinks"] = imagesLinks;
             }
             return View(review);
         }

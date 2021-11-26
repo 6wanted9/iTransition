@@ -23,7 +23,7 @@ namespace Couresework.Controllers
     public class ReviewManipulatingController : Controller
     {
         private readonly ApplicationDbContext _db;
-        private DropboxClient dropboxClient = new DropboxClient("sl.A8_6FyE1pGKSmSGkhqEcrd6UvGYBcJtLoBT2USV1pX0DYZJGxgvNPc6vTM4Zth47NhSnuH9IPhUQK5NmDvlG0Z8Vvr9Skt0311-sUiybHWAlijJZQdn5uLWRlmTIMBB4yLtm5M_b");
+        private DropboxClient dropboxClient = new DropboxClient("gy6HcdfPF2sAAAAAAAAAASK76w_lmXptJEM7lcBfiym9x1x6QBB7s-Db3TBz-uOd");
         public ReviewManipulatingController(ApplicationDbContext db)
         {
             _db = db;
@@ -62,13 +62,16 @@ namespace Couresework.Controllers
                 UploadImages(_imagesURLs, review);
             }
         }
-        private async void UploadImages(List<IFormFile> _imagesURLs, Review review)
+        private void UploadImages(List<IFormFile> _imagesURLs, Review review)
         {
             var imagesURLs = new List<string>();
             int fileIndex = 0;
             var fileFolder = $"/{review.Id}";
-            if (dropboxClient.Files.ListFolderAsync(fileFolder).Result.HasMore)
-               await dropboxClient.Files.DeleteV2Async(fileFolder);
+            if (CheckExisting(fileFolder).Result == true)
+            {
+                var deletingFolder = dropboxClient.Files.DeleteV2Async(fileFolder);
+                deletingFolder.Wait();
+            }
             foreach (var item in _imagesURLs)
             {
                 string fileName = $"{fileIndex}{Path.GetExtension(item.FileName)}";
@@ -87,7 +90,7 @@ namespace Couresework.Controllers
                         WriteMode.Overwrite.Instance,
                         body: mem);
                     updated.Wait();
-                    if (dropboxClient.Sharing.ListSharedLinksAsync($"{fileFolder}/{fileName}") != null)
+                    if (dropboxClient.Sharing.ListSharedLinksAsync($"{fileFolder}/{fileName}").Result.Links.FirstOrDefault() != null)
                     {
                         var sharedLink = dropboxClient.Sharing.ListSharedLinksAsync($"{fileFolder}/{fileName}");
                         sharedLink.Wait();
@@ -105,6 +108,24 @@ namespace Couresework.Controllers
             review.ImagesURLs = String.Join(",", imagesURLs.ToArray());
             _db.SaveChanges();
         }
+
+        private async Task<bool> CheckExisting(string path)
+        {
+            bool folderExists = true;
+            try
+            {
+                await dropboxClient.Files.GetMetadataAsync(path);
+            }
+            catch (ApiException<Dropbox.Api.Files.GetMetadataError> e)
+            {
+                if (e.ErrorResponse.IsPath && e.ErrorResponse.AsPath.Value.IsNotFound)
+                {
+                    folderExists = false;
+                }
+            }
+            return folderExists;
+        }
+
         public void DeleteReview(int reviewId, string userId)
         {
             Response.Redirect("/");
