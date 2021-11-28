@@ -59,8 +59,7 @@ namespace Couresework.Migrations
                     ReviewText = table.Column<string>(nullable: true),
                     Rating = table.Column<int>(nullable: false),
                     AuthorId = table.Column<string>(nullable: true),
-                    UsersRate = table.Column<double>(nullable: false),
-                    ImagesURLs = table.Column<string>(nullable: true)
+                    UsersRate = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {

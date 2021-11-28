@@ -73,7 +73,7 @@
                 </div>
                 <div class="mb-3">
                   <label for="formFileMultiple" class="form-label">@langLocalizer["Images"]</label>
-                  <input class="form-control @theme" type="file" id="formFileMultiple" asp-for="ImagesURLs" name="_imagesURLs" accept=".jpg, .jpeg, .png" value="@review.ImagesURLs.Split(",").ToList()" multiple>
+                  <input class="form-control @theme" type="file" id="formFileMultiple" name="_imagesURLs" accept=".jpg, .jpeg, .png" multiple>
                 </div>
                 <select class="form-select mb-3 @theme" id="validationCustom05" asp-for="Rating" required>
                     <option selected disabled value="">@langLocalizer["Rating"]</option>

@@ -36,17 +36,23 @@ namespace Couresework.Controllers
         }
         private DropboxClient dropboxClient = new DropboxClient("gy6HcdfPF2sAAAAAAAAAASK76w_lmXptJEM7lcBfiym9x1x6QBB7s-Db3TBz-uOd");
 
-        public async Task<IActionResult> Index(string contentTypeSort)
+        public async Task<IActionResult> Index(string contentTypeSort, int page = 1)
         {
+            int elementsPerPage = 1;
+            int pagesAmount = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(_db.Reviews.Count()) / elementsPerPage));
             if (contentTypeSort == _multiLocalizer["Latest reviews"].Value || contentTypeSort == null)
             {
                 ViewData["contentTypeSort"] = _multiLocalizer["Latest reviews"].Value;
-                return View(await _db.Reviews.OrderByDescending(c => c.Id).Take(10).ToListAsync());
+                ViewData["pagesAmount"] = pagesAmount;
+                ViewData["currentPage"] = page;
+                return View(await _db.Reviews.OrderByDescending(c => c.Id).Skip((page - 1) * elementsPerPage).Take(elementsPerPage).ToListAsync());
             }
             else if (contentTypeSort == _multiLocalizer["Popular reviews"].Value)
             {
                 ViewData["contentTypeSort"] = _multiLocalizer["Popular reviews"].Value;
-                return View(await _db.Reviews.OrderByDescending(c => c.UsersRate).Take(10).ToListAsync());
+                ViewData["pagesAmount"] = pagesAmount;
+                ViewData["currentPage"] = page;
+                return View(await _db.Reviews.OrderByDescending(c => c.UsersRate).Skip((page - 1) * elementsPerPage).Take(elementsPerPage).ToListAsync());
             }
             else
             {
@@ -55,24 +61,27 @@ namespace Couresework.Controllers
             }
         }
         [Authorize]
-        public async Task<IActionResult> ManageAccount(string contentTypeSort, string userID)
+        public async Task<IActionResult> ManageAccount(string contentTypeSort, string userID, int page = 1)
         {
             if (userID != null)
             {
+                int elementsPerPage = 1;
+                int pagesAmount = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(_db.Reviews.Count()) / elementsPerPage));
                 ViewData["userID"] = userID;
+                ViewData["pagesAmount"] = pagesAmount;
+                ViewData["currentPage"] = page;
                 if (contentTypeSort == _multiLocalizer["Latest reviews"].Value || contentTypeSort == null)
                 {
                     ViewData["contentTypeSort"] = _multiLocalizer["Latest reviews"].Value;
-                    return View(await _db.Reviews.OrderByDescending(c => c.Id).Where(c => c.AuthorId == userID).ToListAsync());
+                    return View(await _db.Reviews.OrderByDescending(c => c.Id).Where(c => c.AuthorId == userID).Skip((page - 1) * elementsPerPage).Take(elementsPerPage).ToListAsync());
                 }
                 else if (contentTypeSort == _multiLocalizer["Popular reviews"].Value)
                 {
                     ViewData["contentTypeSort"] = _multiLocalizer["Popular reviews"].Value;
-                    return View(await _db.Reviews.OrderByDescending(c => c.UsersRate).Where(c => c.AuthorId == userID).ToListAsync());
+                    return View(await _db.Reviews.OrderByDescending(c => c.UsersRate).Where(c => c.AuthorId == userID).Skip((page - 1) * elementsPerPage).Take(elementsPerPage).ToListAsync());
                 }
                 else
                 {
-                    ViewData["contentTypeSort"] = _multiLocalizer["TAGs"].Value;
                     return View();
                 }
             }
@@ -193,7 +202,7 @@ namespace Couresework.Controllers
             }
             else if(tag != null)
             {
-                var reviews = await _db.Reviews.Where(review => review.Tags.Contains(searchStr)).OrderByDescending(review => review.Id).ToListAsync();
+                var reviews = await _db.Reviews.Where(review => review.Tags.Contains(tag)).OrderByDescending(review => review.Id).ToListAsync();
                 if(reviews.Count != 0)
                     ViewData["searchData"] = reviews;
                 return View();

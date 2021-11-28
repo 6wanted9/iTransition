@@ -24,6 +24,15 @@
         }
         
     }
+    int pagesAmount = 1, currentPage = 1;
+    if(ViewData["currentPage"] != null)
+    {
+       currentPage = Convert.ToInt32(ViewData["currentPage"]); 
+    }
+    if(ViewData["pagesAmount"] != null)
+    {
+       pagesAmount = Convert.ToInt32(ViewData["pagesAmount"]); 
+    }
 }
 <div class="container">
     @{
@@ -47,10 +56,6 @@
                         @if (Convert.ToString(ViewData["contentTypeSort"]) != langLocalizer["Popular reviews"].Value)
                         {
                             <option>@langLocalizer["Popular reviews"]</option>
-                        }
-                        @if (Convert.ToString(ViewData["contentTypeSort"]) != langLocalizer["TAGs"].Value)
-                        {
-                            <option>@langLocalizer["TAGs"]</option>
                         }
                     </select>
                     <button class="btn btn-outline-primary" type="submit">@langLocalizer["CHOOSE"]</button>
@@ -88,6 +93,25 @@
                     </div>
                 </div>
             }
+            <nav aria-label="..." class="d-flex flex-row justify-content-center">
+              <ul class="pagination pagination-sm">
+                    @{
+                        for (var i = 1; i <= pagesAmount; i++)
+                        {
+                            if(i == currentPage)
+                            {
+                                <li class="page-item active" aria-current="page">
+                                  <span class="page-link">@i</span>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item"><a class="page-link @theme" href="@Url.Action("ManageAccount", "Home", new {contentTypeSort = ViewData["contentTypeSort"], page = i, userID = userId}, null)">@i</a></li>
+                            }
+                        }
+                    }
+              </ul>
+            </nav>
         }
     }
     else

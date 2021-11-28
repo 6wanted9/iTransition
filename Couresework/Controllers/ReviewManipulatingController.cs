@@ -31,8 +31,15 @@ namespace Couresework.Controllers
         public void CreateReview(string name, string group, List<string> _tags, string reviewText, List<IFormFile> _imagesURLs, ushort rating, string authorId)
         {
             Response.Redirect("/");
+            foreach (var tag in _tags.ToList())
+            {
+                if (tag == null || tag.All(Char.IsWhiteSpace))
+                {
+                    _tags.Remove(tag);
+                }
+            }
             var reviewTags = String.Join(",", _tags.ToArray());
-            Review review = new Review(name, group, reviewTags, reviewText, rating, authorId, "");
+            Review review = new Review(name, group, reviewTags, reviewText, rating, authorId);
             _db.Add(review);
             _db.SaveChanges();
             TagsRepository.AddTags(review);
@@ -45,6 +52,13 @@ namespace Couresework.Controllers
         public void EditReview(string name, string group, List<string> tags, string reviewText, List<IFormFile> _imagesURLs, ushort rating, int reviewId, string userId)
         {
             Response.Redirect("/");
+            foreach (var tag in tags.ToList())
+            {
+                if (tag == null || tag.All(Char.IsWhiteSpace))
+                {
+                    tags.Remove(tag);
+                }
+            }
             var reviewTags = String.Join(",", tags.ToArray());
             var review = _db.Reviews.FirstOrDefault(rev => rev.Id == reviewId);
             if (review.AuthorId == userId || _db.UserRoles.FirstOrDefault(role => role.UserId == userId && role.RoleId == "0") != null)
@@ -89,26 +103,22 @@ namespace Couresework.Controllers
                         $"{fileFolder}/{fileName}",
                         WriteMode.Overwrite.Instance,
                         body: mem);
-                    updated.Wait();
-                    if (dropboxClient.Sharing.ListSharedLinksAsync($"{fileFolder}/{fileName}").Result.Links.FirstOrDefault() != null)
-                    {
-                        var sharedLink = dropboxClient.Sharing.ListSharedLinksAsync($"{fileFolder}/{fileName}");
-                        sharedLink.Wait();
-                        imagesURLs.Add(sharedLink.Result.Links.FirstOrDefault().Url);
-                    }
-                    else
-                    {
-                        var sharedLink = dropboxClient.Sharing.CreateSharedLinkWithSettingsAsync($"{fileFolder}/{fileName}");
-                        sharedLink.Wait();
-                        imagesURLs.Add(sharedLink.Result.Url);
-                    }                    
+                    updated.Wait();           
                 }
                 fileIndex++;
             }
-            review.ImagesURLs = String.Join(",", imagesURLs.ToArray());
             _db.SaveChanges();
         }
 
+        private void DeleteDropBoxFolder(Review review)
+        {
+            var fileFolder = $"/{review.Id}";
+            if (CheckExisting(fileFolder).Result == true)
+            {
+                var deletingFolder = dropboxClient.Files.DeleteV2Async(fileFolder);
+                deletingFolder.Wait();
+            }
+        }
         private async Task<bool> CheckExisting(string path)
         {
             bool folderExists = true;
@@ -130,6 +140,7 @@ namespace Couresework.Controllers
         {
             Response.Redirect("/");
             var review = _db.Reviews.FirstOrDefault(rev => rev.Id == reviewId);
+            DeleteDropBoxFolder(review);
             if (review.AuthorId == userId || _db.UserRoles.FirstOrDefault(role => role.UserId == userId && role.RoleId == "0") != null)
             {
                 _db.Reviews.Remove(review);

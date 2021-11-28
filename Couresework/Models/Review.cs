@@ -8,7 +8,7 @@ namespace Couresework.Models
 {
     public class Review
     {
-        public Review(string name, string group, string tags, string reviewText, ushort rating, string authorId, string imagesURLs)
+        public Review(string name, string group, string tags, string reviewText, ushort rating, string authorId)
         {
             Name = name;
             Group = group;
@@ -17,7 +17,6 @@ namespace Couresework.Models
             Rating = rating;
             AuthorId = authorId;
             UsersRate = 0;
-            ImagesURLs = imagesURLs;
         }
         public int Id { get; set; }
         public string Name { get; set; }
@@ -27,7 +26,6 @@ namespace Couresework.Models
         public ushort Rating { get; set; }
         public string AuthorId { get; set; }
         public double UsersRate { get; set; }
-        public string ImagesURLs { get; set; }
         public List<ReviewStat> ReviewStats { get; set; }
     }
 }
