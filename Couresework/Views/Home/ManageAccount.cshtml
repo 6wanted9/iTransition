@@ -37,25 +37,29 @@
 <div class="container">
     @{
         var userId = UserManager.GetUserId(User);
-        var isAdmin = db.UserRoles.FirstOrDefault(obj => obj.UserId == userId && obj.RoleId == "0");
+        var isAdmin = db.UserRoles.FirstOrDefault(obj => obj.UserId == userId && obj.RoleId == "0") == null ? false: true;
+        if(isAdmin)
+        {
+            userId = ViewData["userID"].ToString();
+        }
     }
-    @if (SignInManager.IsSignedIn(User) && (UserManager.GetUserId(User) == Convert.ToString(ViewData["userID"]) || isAdmin != null))
+    @if (SignInManager.IsSignedIn(User) && (UserManager.GetUserId(User) == Convert.ToString(ViewData["userID"]) || isAdmin))
     {
         <div class="form-floating m-3">
-            <a class="btn btn-outline-primary" asp-action="CreatingReview" asp-controller="Home" asp-route-userId="@ViewData["userID"]" value="Create Review">@langLocalizer["New Review"]</a>
+            <a class="btn btn-outline-primary" asp-action="CreatingReview" asp-controller="Home" asp-route-userId="@userId" value="Create Review">@langLocalizer["New Review"]</a>
         </div>
         <div class="d-flex flex-column justify-content-center">
-            <form asp-action="ManageAccount" asp-controller="Home" asp-route-userID="@UserManager.GetUserId(User)" asp-antiforgery="true" runat="server">
+            <form asp-action="ManageAccount" asp-controller="Home" asp-route-userID="@userId" asp-antiforgery="true" runat="server">
                 <div class="m-3 d-flex flex-row justify-content-center">
                     <select class="form-select @theme" id="validationCustom01" name="contentTypeSort">
-                        <option>@Convert.ToString(ViewData["contentTypeSort"])</option>
-                        @if (Convert.ToString(ViewData["contentTypeSort"]) != langLocalizer["Latest reviews"].Value)
+                        <option>@langLocalizer[$"{Convert.ToString(ViewData["contentTypeSort"])}"]</option>
+                        @if (Convert.ToString(ViewData["contentTypeSort"]) != "Latest reviews")
                         {
-                            <option>@langLocalizer["Latest reviews"]</option>
+                            <option value="Latest reviews">@langLocalizer["Latest reviews"]</option>
                         }
-                        @if (Convert.ToString(ViewData["contentTypeSort"]) != langLocalizer["Popular reviews"].Value)
+                        @if (Convert.ToString(ViewData["contentTypeSort"]) != "Popular reviews")
                         {
-                            <option>@langLocalizer["Popular reviews"]</option>
+                            <option value="Popular reviews">@langLocalizer["Popular reviews"]</option>
                         }
                     </select>
                     <button class="btn btn-outline-primary" type="submit">@langLocalizer["CHOOSE"]</button>
@@ -70,10 +74,6 @@
                     <div class="d-flex flex-column justify-content-start">
                         <p class="ms-2 mt-2"><b>@langLocalizer["Topic"]:</b> @item.Name</p>
                         @{
-                            string modalId1 = $"#{item.Id}exampleModal";
-                            string modalId2 = $"{item.Id}exampleModal";
-                            string modalId3 = $"{item.Id}exampleModalLabel";
-
                             string rateValue;
                             if (item.UsersRate == 0)
                             {
@@ -106,7 +106,14 @@
                             }
                             else
                             {
-                                <li class="page-item"><a class="page-link @theme" href="@Url.Action("ManageAccount", "Home", new {contentTypeSort = ViewData["contentTypeSort"], page = i, userID = userId}, null)">@i</a></li>
+                                if (ViewData["contentTypeSort"] == null || Convert.ToString(ViewData["contentTypeSort"]) == langLocalizer["Latest reviews"].Value)
+                                {
+                                    <li class="page-item"><a class="page-link @theme" href="@Url.Action("ManageAccount", "Home", new {contentTypeSort = ViewData["contentTypeSort"], page = i, userID = userId}, null)">@i</a></li>
+                                }
+                                else
+                                {
+                                    <li class="page-item"><a class="page-link @theme" href="@Url.Action("ManageAccount", "Home", new {contentTypeSort = ViewData["contentTypeSort"], page = i, userID = userId}, null)">@i</a></li>
+                                }
                             }
                         }
                     }

@@ -49,17 +49,17 @@ namespace Couresework.Controllers
                 UploadImages(_imagesURLs, review);
             }
         }
-        public void EditReview(string name, string group, List<string> tags, string reviewText, List<IFormFile> _imagesURLs, ushort rating, int reviewId, string userId)
+        public void EditReview(string name, string group, List<string> _tags, string reviewText, List<IFormFile> _imagesURLs, ushort rating, int reviewId, string userId)
         {
             Response.Redirect("/");
-            foreach (var tag in tags.ToList())
+            foreach (var tag in _tags.ToList())
             {
-                if (tag == null || tag.All(Char.IsWhiteSpace))
+                if (tag == null || tag=="" || tag.All(Char.IsWhiteSpace))
                 {
-                    tags.Remove(tag);
+                    _tags.Remove(tag);
                 }
             }
-            var reviewTags = String.Join(",", tags.ToArray());
+            var reviewTags = String.Join(",", _tags.ToArray());
             var review = _db.Reviews.FirstOrDefault(rev => rev.Id == reviewId);
             if (review.AuthorId == userId || _db.UserRoles.FirstOrDefault(role => role.UserId == userId && role.RoleId == "0") != null)
             {

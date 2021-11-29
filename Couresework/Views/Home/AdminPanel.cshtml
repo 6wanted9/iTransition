@@ -14,6 +14,18 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@{
+    string theme = "light";
+
+    if(Context.Request.Cookies.ContainsKey("theme"))
+    {
+        if(Context.Request.Cookies["theme"] == "dark")
+        {
+            theme = "dark";
+        }
+
+    }
+}
 <div class="container">
     @{
         var userId = UserManager.GetUserId(User);
@@ -26,7 +38,7 @@
             foreach (var item in Model)
             {
                 <form asp-action="ManageAccount" asp-controller="Home" asp-route-userID="@item.Id">
-                    <div class="border border-gray rounded m-3 d-flex flex-row justify-content-between">
+                    <div class="shadow rounded m-3 d-flex flex-row justify-content-between @theme">
                         <div class="d-flex flex-column justify-content-start">
                             <p class="ms-2 mt-2"><b>@langLocalizer["User Id"]:</b> @item.Id</p>
                             <p class="ms-2"><b>@langLocalizer["User Name"]:</b> @item.UserName</p>

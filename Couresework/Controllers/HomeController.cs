@@ -38,25 +38,25 @@ namespace Couresework.Controllers
 
         public async Task<IActionResult> Index(string contentTypeSort, int page = 1)
         {
-            int elementsPerPage = 1;
+            int elementsPerPage = 2;
             int pagesAmount = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(_db.Reviews.Count()) / elementsPerPage));
-            if (contentTypeSort == _multiLocalizer["Latest reviews"].Value || contentTypeSort == null)
+            if (contentTypeSort == "Latest reviews" || contentTypeSort == null)
             {
-                ViewData["contentTypeSort"] = _multiLocalizer["Latest reviews"].Value;
+                ViewData["contentTypeSort"] = "Latest reviews";
                 ViewData["pagesAmount"] = pagesAmount;
                 ViewData["currentPage"] = page;
                 return View(await _db.Reviews.OrderByDescending(c => c.Id).Skip((page - 1) * elementsPerPage).Take(elementsPerPage).ToListAsync());
             }
-            else if (contentTypeSort == _multiLocalizer["Popular reviews"].Value)
+            else if (contentTypeSort == "Popular reviews")
             {
-                ViewData["contentTypeSort"] = _multiLocalizer["Popular reviews"].Value;
+                ViewData["contentTypeSort"] = "Popular reviews";
                 ViewData["pagesAmount"] = pagesAmount;
                 ViewData["currentPage"] = page;
                 return View(await _db.Reviews.OrderByDescending(c => c.UsersRate).Skip((page - 1) * elementsPerPage).Take(elementsPerPage).ToListAsync());
             }
             else
             {
-                ViewData["contentTypeSort"] = _multiLocalizer["TAGs"].Value;
+                ViewData["contentTypeSort"] = "TAGs";
                 return View(await _db.Reviews.ToListAsync());
             }
         }
@@ -70,14 +70,14 @@ namespace Couresework.Controllers
                 ViewData["userID"] = userID;
                 ViewData["pagesAmount"] = pagesAmount;
                 ViewData["currentPage"] = page;
-                if (contentTypeSort == _multiLocalizer["Latest reviews"].Value || contentTypeSort == null)
+                if (contentTypeSort == "Latest reviews" || contentTypeSort == null)
                 {
-                    ViewData["contentTypeSort"] = _multiLocalizer["Latest reviews"].Value;
+                    ViewData["contentTypeSort"] = "Latest reviews";
                     return View(await _db.Reviews.OrderByDescending(c => c.Id).Where(c => c.AuthorId == userID).Skip((page - 1) * elementsPerPage).Take(elementsPerPage).ToListAsync());
                 }
-                else if (contentTypeSort == _multiLocalizer["Popular reviews"].Value)
+                else if (contentTypeSort == "Popular reviews")
                 {
-                    ViewData["contentTypeSort"] = _multiLocalizer["Popular reviews"].Value;
+                    ViewData["contentTypeSort"] = "Popular reviews";
                     return View(await _db.Reviews.OrderByDescending(c => c.UsersRate).Where(c => c.AuthorId == userID).Skip((page - 1) * elementsPerPage).Take(elementsPerPage).ToListAsync());
                 }
                 else

@@ -4,7 +4,9 @@
     "\\Couresework",
     "\\Couresework\\Controllers",
     "\\Couresework\\Views",
-    "\\Couresework\\Views\\Home"
+    "\\Couresework\\Views\\Home",
+    "\\Couresework\\wwwroot",
+    "\\Couresework\\wwwroot\\js"
   ],
   "SelectedNode": "\\iTransition.sln",
   "PreviewInSolutionExplorer": false

@@ -42,18 +42,18 @@
         <form asp-action="Index" asp-controller="Home" asp-antiforgery="true" runat="server">
             <div class="m-3 d-flex flex-row justify-content-center">
                 <select class="form-select @theme" id="validationCustom01" name="contentTypeSort">
-                    <option selected disabled value="">@Convert.ToString(ViewData["contentTypeSort"])</option>
-                    @if (Convert.ToString(ViewData["contentTypeSort"]) != langLocalizer["Latest reviews"].Value)
+                    <option selected disabled value="">@langLocalizer[$"{Convert.ToString(ViewData["contentTypeSort"])}"]</option>
+                    @if (Convert.ToString(ViewData["contentTypeSort"]) != "Latest reviews")
                     {
-                        <option>@langLocalizer["Latest reviews"]</option>
+                        <option value="Latest reviews">@langLocalizer["Latest reviews"]</option>
                     }
-                    @if (Convert.ToString(ViewData["contentTypeSort"]) != langLocalizer["Popular reviews"].Value)
+                    @if (Convert.ToString(ViewData["contentTypeSort"]) != "Popular reviews")
                     {
-                        <option>@langLocalizer["Popular reviews"]</option>
+                        <option value="Popular reviews">@langLocalizer["Popular reviews"]</option>
                     }
-                    @if (Convert.ToString(ViewData["contentTypeSort"]) != langLocalizer["TAGs"].Value)
+                    @if (Convert.ToString(ViewData["contentTypeSort"]) != "TAGs")
                     {
-                        <option>@langLocalizer["TAGs"]</option>
+                        <option value="TAGs">@langLocalizer["TAGs"]</option>
                     }
                 </select>
                 <button class="btn btn-outline-primary" type="submit">@langLocalizer["CHOOSE"]</button>
@@ -62,7 +62,7 @@
     </div>
     @if (Model != null)
     {
-        @if(ViewData["contentTypeSort"] == null || Convert.ToString(ViewData["contentTypeSort"]) == langLocalizer["Latest reviews"].Value || Convert.ToString(ViewData["contentTypeSort"]) == langLocalizer["Popular reviews"].Value)
+        @if(ViewData["contentTypeSort"] == null || Convert.ToString(ViewData["contentTypeSort"]) == "Latest reviews" || Convert.ToString(ViewData["contentTypeSort"]) == "Popular reviews")
         {
             @foreach (var item in Model)
             {
