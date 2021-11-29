@@ -18,7 +18,7 @@
         
     }
 }
-<ul class="navbar-nav">
+<ul class="nav navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
         int likes;
@@ -59,7 +59,7 @@
         <form class="form-inline" asp-action="Search" asp-controller="Home">
             <div class="input-group flex-nowrap @theme">
                 <div class="form-outline @theme">
-                    <input type="search" class="form-control @theme" rounded-end-0 placeholder="@langLocalizer["HeaderSearch"]" name="searchStr"/>
+                    <input type="search" class="form-control @theme rounded-0 rounded-start" placeholder="@langLocalizer["HeaderSearch"]" name="searchStr"/>
                 </div>
                 <button type="submit" class="btn btn-outline-primary">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">

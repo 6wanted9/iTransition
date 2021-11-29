@@ -70,11 +70,11 @@
                 {
                     <a class="navbar-brand" asp-controller="Home" asp-action="AdminPanel">@langLocalizer["HeaderAdminPanel"]</a>
                 }
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse navbarSupportedContent collapse d-sm-inline-flex flex-sm-row-reverse">
+                <div class="collapse navbar-collapse navbarSupportedContent d-sm-inline-flex flex-sm-row-reverse" id="navbarSupportedContent">
                     <partial name="_LoginPartial" />
                 </div>
             </div>
