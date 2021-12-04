@@ -106,7 +106,6 @@ namespace Couresework.Controllers
             ViewData["userId"] = userId;
             return View();
         }
-        [Authorize]
         public async Task<IActionResult> WatchingReview(int reviewId, string userId)
         {
             var review = _db.Reviews.Find(reviewId);
@@ -195,7 +194,8 @@ namespace Couresework.Controllers
         {
             if (searchStr != null)
             {
-                var reviews = await _db.Reviews.Where(review => review.Group.Contains(searchStr) || review.Name.Contains(searchStr) || review.ReviewText.Contains(searchStr) || review.Tags.Contains(searchStr)).OrderByDescending(review => review.Id).ToListAsync();
+                var comments = await _db.Comments.Where(c => c.UserComment.Contains(searchStr)).Select(c => c.ReviewId).ToListAsync();
+                var reviews = await _db.Reviews.Where(review => review.Group.Contains(searchStr) || review.Name.Contains(searchStr) || review.ReviewText.Contains(searchStr) || review.Tags.Contains(searchStr) || comments.Contains(review.Id)).OrderByDescending(review => review.Id).ToListAsync();
                 if (reviews.Count != 0)
                     ViewData["searchData"] = reviews;
                 return View();
@@ -251,6 +251,12 @@ namespace Couresework.Controllers
             }
             ViewData["theme"] = "dark";
             return LocalRedirect(returnUrl);
+        }
+
+        public ActionResult Comments(int reviewId)
+        {
+            ViewData["Comments"] = _db.Comments.Where(c => c.ReviewId == reviewId).ToList();
+            return PartialView("_Comments");
         }
     }
 }

@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Couresework.Data
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Localization
+@using Westwind.AspNetCore.Markdown;
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject ApplicationDbContext db
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<MultiLanguage> langLocalizer
+@model List<Comment>
+@{
+    ViewData["Title"] = "Home Page";
+
+}
+@{
+    string theme = "light";
+
+    if(Context.Request.Cookies.ContainsKey("theme"))
+    {
+        if(Context.Request.Cookies["theme"] == "dark")
+        {
+            theme = "dark";
+        }
+
+    }
+}
+<div class="container">
+    @{
+        if(Model != null)
+        {
+            foreach (var comment in Model)
+            {
+                    <div class="shadow rounded m-3 d-flex flex-column justify-content-start @theme">
+                        <p class="ms-2 mt-2"><b>@langLocalizer["Author"]:</b> @UserManager.FindByIdAsync(@comment.AuthorId).Result.UserName</p>
+                        <p class="ms-2"><b>@langLocalizer["Comment"]:</b> <br> 
+                        <div class="ms-2">
+                        @Html.Raw(String.Join("<br>", comment.UserComment.Split("\n")))
+                        </div></p>
+                    </div>
+            }
+        }
+    }
+</div>

@@ -1,15 +1,17 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Couresework.Models
 {
-    public class ReviewStat
+    public class Comment
     {
+        public Comment(int reviewId, string authorId, string userComment)
+        {
+            ReviewId = reviewId;
+            AuthorId = authorId;
+            UserComment = userComment;
+        }
+
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key, Column(Order = 0)]
         public int Id { get; set; }
@@ -17,11 +19,10 @@ namespace Couresework.Models
         public int ReviewId { get; set; }
         public Review Review { get; set; }
         [Required]
-        public string UserId { get; set; }
-        [ForeignKey("UserId")]
+        public string AuthorId { get; set; }
+        [ForeignKey("AuthorId")]
         public AspNetUsers AspNetUsers { get; set; }
         [Required]
-        public int UserRated { get; set; }
-        public bool UserLiked { get; set; }
+        public string UserComment { get; set; }
     }
 }

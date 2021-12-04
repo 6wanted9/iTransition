@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Globalization;
+using Couresework.Models;
 
 namespace Couresework
 {
@@ -31,6 +32,7 @@ namespace Couresework
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSignalR();
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("MyDbConnection")));
@@ -115,6 +117,7 @@ namespace Couresework
                     name: "revievmanipulating",
                     pattern: "{controller=ReviewManipulating}/{action=CreateReview}/{id?}");
                 endpoints.MapRazorPages();
+                endpoints.MapHub<CommentHub>("/comment");
             });
         }
     }

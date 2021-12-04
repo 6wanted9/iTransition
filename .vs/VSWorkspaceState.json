@@ -5,6 +5,7 @@
     "\\Couresework\\Controllers",
     "\\Couresework\\Views",
     "\\Couresework\\Views\\Home",
+    "\\Couresework\\Views\\Shared",
     "\\Couresework\\wwwroot",
     "\\Couresework\\wwwroot\\js"
   ],

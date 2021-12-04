@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Author" xml:space="preserve">
+    <value>Автор</value>
+  </data>
   <data name="CHOOSE" xml:space="preserve">
     <value>Выбрать</value>
+  </data>
+  <data name="Comment" xml:space="preserve">
+    <value>Комментарий</value>
   </data>
   <data name="Delete Review" xml:space="preserve">
     <value>Удалить Обзор</value>

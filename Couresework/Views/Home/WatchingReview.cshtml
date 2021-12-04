@@ -9,6 +9,7 @@
 @inject ApplicationDbContext DB
 @inject IViewLocalizer Localizer
 @inject IHtmlLocalizer<MultiLanguage> langLocalizer
+@model Review
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -27,6 +28,7 @@
 
     }
     var imagesLinks = ViewData["imagesLinks"] as List<string>;
+    var comments = DB.Comments.Where(c => c.ReviewId == Model.Id).OrderByDescending(c => c.Id).ToList();
 }
 <div class="container">
     <div class="form-control @theme rounded m-3">
@@ -116,5 +118,58 @@
                 </div>
             </div>
         }
+            <form asp-action="AddComment" asp-controller="ReviewManipulating" asp-route-userId="@UserManager.GetUserId(User)" asp-route-reviewId="@Model.Id" asp-antiforgery="true" runat="server" class="needs-validation m-3" enctype="multipart/form-data"  novalidate>
+                <div class="form-floating mb-3">
+                    <textarea class="form-control @theme" placeholder="Leave a comment here" id="userComment" required style="height: 100px" name="userComment"></textarea>
+                    <label for="userComment">@langLocalizer["Comment"]</label>
+                </div>
+                <div class="form-floating @theme">
+                    <button type="submit" class="btn btn-outline-primary" id="sendBtn">@langLocalizer["Sumbit"]</button>
+                </div>
+            </form>
+        
+        <div id="ReviewComments" data-bs-spy="scroll" data-bs-offset="50" class="">
+            @await Html.PartialAsync("_Comments", comments)
+        </div>
     }
 </div>
+
+<script src="~/js/microsoft/signalr/dist/browser/signalr.min.js"></script>
+<script>
+    const hubConnection = new signalR.HubConnectionBuilder()
+        .withUrl("/comment")
+        .build();
+ 
+    // receive message from the server
+    hubConnection.on("Receive", function (userComment, userName) {
+        let commentContainer = document.createElement('div');
+        commentContainer.classList.add("container");
+        //
+        let commentSpace = document.createElement('div');
+        commentSpace.classList.add("shadow", "rounded", "m-3", "d-flex", "flex-column", "justify-content-start", "@theme");
+        //
+        let pAuthor = document.createElement('p');
+        pAuthor.classList.add("ms-2", "mt-2");
+        pAuthor.innerHTML = "<b>@langLocalizer["Author"]: </b>" + userName;
+        //
+        let pComment = document.createElement('p');
+        pComment.classList.add("ms-2");
+        pComment.innerHTML = "<b>@langLocalizer["Comment"]:</b> <br>" + userComment.split("\n").join("<br>");
+        //
+        commentSpace.append(pAuthor);
+        commentSpace.append(pComment);
+        commentContainer.append(commentSpace);
+        //
+        document.getElementById("ReviewComments").prepend(commentContainer);
+    });
+ 
+    // send message to the server
+    document.getElementById("sendBtn").addEventListener("click", function (e) {
+        let userComment = document.getElementById("userComment").value;
+ 
+        hubConnection.invoke("Send", { "userComment": userComment });
+            
+    });
+ 
+    hubConnection.start();
+</script>

@@ -17,8 +17,9 @@ namespace Couresework.Models
         [Key, Column(Order = 0)]
         public int Id { get; set; }
         [Column(Order = 1)]
+        [Required]
         public string UserId { get; set; }
-        [ForeignKey("Id")]
+        [ForeignKey("UserId")]
         public AspNetUsers AspNetUsers { get; set; }
         public int Likes { get; set; }
     }

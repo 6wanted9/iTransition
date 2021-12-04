@@ -10,5 +10,6 @@ namespace Couresework.Models
     {
         public List<ReviewStat> ReviewStats { get; set; }
         public LikesAmount LikesAmount { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }

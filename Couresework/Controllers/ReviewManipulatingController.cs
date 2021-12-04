@@ -16,17 +16,20 @@ using Dropbox.Api;
 using System.Text;
 using Dropbox.Api.Files;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Couresework.Controllers
 {
     [Authorize]
     public class ReviewManipulatingController : Controller
     {
+        IHubContext<CommentHub> _hubContext;
         private readonly ApplicationDbContext _db;
         private DropboxClient dropboxClient = new DropboxClient("gy6HcdfPF2sAAAAAAAAAASK76w_lmXptJEM7lcBfiym9x1x6QBB7s-Db3TBz-uOd");
-        public ReviewManipulatingController(ApplicationDbContext db)
+        public ReviewManipulatingController(ApplicationDbContext db, IHubContext<CommentHub> hubContext)
         {
             _db = db;
+            _hubContext = hubContext;
         }
         public void CreateReview(string name, string group, List<string> _tags, string reviewText, List<IFormFile> _imagesURLs, ushort rating, string authorId)
         {
@@ -224,6 +227,14 @@ namespace Couresework.Controllers
             averageRating /= rates.Length;
             var review = _db.Reviews.FirstOrDefault(revID => revID.Id == reviewID);
             review.UsersRate = averageRating;
+        }
+        public async void AddComment(int reviewId, string userId, string userComment)
+        {
+            Response.Redirect($"/Home/WatchingReview/?reviewId={reviewId}&userId={userId}");
+            Comment comment = new Comment(reviewId, userId, userComment);
+            _db.Comments.Add(comment);
+            _db.SaveChanges();
+            await _hubContext.Clients.All.SendAsync("Receive", userComment, _db.Users.FirstOrDefault(u => u.Id == userId).UserName);
         }
     }
 }

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Couresework.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211128201812_Initial")]
+    [Migration("20211204122830_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,11 +21,35 @@ namespace Couresework.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Couresework.Models.LikesAmount", b =>
+            modelBuilder.Entity("Couresework.Models.Comment", b =>
                 {
-                    b.Property<string>("UserId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AuthorId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("ReviewId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserComment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("ReviewId");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("Couresework.Models.LikesAmount", b =>
+                {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
@@ -34,7 +58,14 @@ namespace Couresework.Migrations
                     b.Property<int>("Likes")
                         .HasColumnType("int");
 
-                    b.HasKey("UserId");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("LikesAmounts");
                 });
@@ -47,18 +78,22 @@ namespace Couresework.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AuthorId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Group")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
                     b.Property<string>("ReviewText")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Tags")
@@ -74,16 +109,17 @@ namespace Couresework.Migrations
 
             modelBuilder.Entity("Couresework.Models.ReviewStat", b =>
                 {
-                    b.Property<int>("ReviewId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ReviewId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("UserLiked")
                         .HasColumnType("bit");
@@ -91,7 +127,9 @@ namespace Couresework.Migrations
                     b.Property<int>("UserRated")
                         .HasColumnType("int");
 
-                    b.HasKey("ReviewId", "UserId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReviewId");
 
                     b.HasIndex("UserId");
 
@@ -309,6 +347,21 @@ namespace Couresework.Migrations
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
                     b.HasDiscriminator().HasValue("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Couresework.Models.Comment", b =>
+                {
+                    b.HasOne("Couresework.Models.AspNetUsers", "AspNetUsers")
+                        .WithMany("Comments")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Couresework.Models.Review", "Review")
+                        .WithMany("Comments")
+                        .HasForeignKey("ReviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Couresework.Models.LikesAmount", b =>
