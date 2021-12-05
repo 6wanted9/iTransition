@@ -33,7 +33,7 @@
 <div class="container">
     <div class="form-control @theme rounded m-3">
         <p class=""><b>@langLocalizer["Topic"]:</b> @Model.Name</p>
-        <p class=""><b>@langLocalizer["Group"]:</b> @Model.Group</p>
+        <p class=""><b>@langLocalizer["Group"]:</b> @langLocalizer[Model.Group]</p>
         <p class=""><b>@langLocalizer["RevTags"]:</b> @Model.Tags</p>
     </div>
     <div class="form-control @theme border-primary rounded ps-2 mt-3 me-3 ms-3">
@@ -118,6 +118,7 @@
                 </div>
             </div>
         }
+        <div class="form-control p-0 border-0 @theme rounded m-3 d-flex flex-column justify-content-between align-items-stretch">
             <form asp-action="AddComment" asp-controller="ReviewManipulating" asp-route-userId="@UserManager.GetUserId(User)" asp-route-reviewId="@Model.Id" asp-antiforgery="true" runat="server" class="needs-validation m-3" enctype="multipart/form-data"  novalidate>
                 <div class="form-floating mb-3">
                     <textarea class="form-control @theme" placeholder="Leave a comment here" id="userComment" required style="height: 100px" name="userComment"></textarea>
@@ -127,10 +128,11 @@
                     <button type="submit" class="btn btn-outline-primary" id="sendBtn">@langLocalizer["Sumbit"]</button>
                 </div>
             </form>
-        
-        <div id="ReviewComments" data-bs-spy="scroll" data-bs-offset="50" class="">
-            @await Html.PartialAsync("_Comments", comments)
+            <div id="ReviewComments" data-bs-spy="scroll" data-bs-offset="50" class="">
+                @await Html.PartialAsync("_Comments", comments)
+            </div>
         </div>
+        
     }
 </div>
 
@@ -140,7 +142,6 @@
         .withUrl("/comment")
         .build();
  
-    // receive message from the server
     hubConnection.on("Receive", function (userComment, userName) {
         let commentContainer = document.createElement('div');
         commentContainer.classList.add("container");
@@ -163,7 +164,6 @@
         document.getElementById("ReviewComments").prepend(commentContainer);
     });
  
-    // send message to the server
     document.getElementById("sendBtn").addEventListener("click", function (e) {
         let userComment = document.getElementById("userComment").value;
  

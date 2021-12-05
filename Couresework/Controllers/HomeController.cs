@@ -194,8 +194,12 @@ namespace Couresework.Controllers
         {
             if (searchStr != null)
             {
+                string group = null;
+                if (_multiLocalizer.GetAllStrings().FirstOrDefault(t => t.Value == searchStr) != null)
+                    group = _multiLocalizer.GetAllStrings().FirstOrDefault(t => t.Value == searchStr).Name;
+
                 var comments = await _db.Comments.Where(c => c.UserComment.Contains(searchStr)).Select(c => c.ReviewId).ToListAsync();
-                var reviews = await _db.Reviews.Where(review => review.Group.Contains(searchStr) || review.Name.Contains(searchStr) || review.ReviewText.Contains(searchStr) || review.Tags.Contains(searchStr) || comments.Contains(review.Id)).OrderByDescending(review => review.Id).ToListAsync();
+                var reviews = await _db.Reviews.Where(review => review.Group == group || review.Name.Contains(searchStr) || review.ReviewText.Contains(searchStr) || review.Tags.Contains(searchStr) || comments.Contains(review.Id)).OrderByDescending(review => review.Id).ToListAsync();
                 if (reviews.Count != 0)
                     ViewData["searchData"] = reviews;
                 return View();

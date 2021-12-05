@@ -120,6 +120,9 @@
   <data name="Author" xml:space="preserve">
     <value>Автор</value>
   </data>
+  <data name="Books" xml:space="preserve">
+    <value>Книги</value>
+  </data>
   <data name="CHOOSE" xml:space="preserve">
     <value>Выбрать</value>
   </data>
@@ -137,6 +140,9 @@
   </data>
   <data name="Edit Review" xml:space="preserve">
     <value>Редактировать Обзор</value>
+  </data>
+  <data name="Games" xml:space="preserve">
+    <value>Игры</value>
   </data>
   <data name="Group" xml:space="preserve">
     <value>Группа</value>
@@ -167,6 +173,9 @@
   </data>
   <data name="Like" xml:space="preserve">
     <value>Лайк</value>
+  </data>
+  <data name="Movies" xml:space="preserve">
+    <value>Фильмы</value>
   </data>
   <data name="New Review" xml:space="preserve">
     <value>Новый обзор</value>

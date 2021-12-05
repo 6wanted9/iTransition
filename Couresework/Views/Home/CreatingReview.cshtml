@@ -2,6 +2,7 @@
 @using Couresework.Data
 @using Microsoft.AspNetCore.Mvc.Localization
 @using Microsoft.AspNetCore.Localization
+@using Microsoft.Extensions.Localization;
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 @inject ApplicationDbContext db
@@ -54,10 +55,13 @@
                 <input type="text" class="form-control @theme" placeholder="Leave a comment here" id="validationCustom01" required asp-for="Name" />
                 <label for="validationCustom01">@langLocalizer["Topic"]</label>
             </div>
-            <div class="form-floating mb-3 ">
-                <input type="text" class="form-control @theme" placeholder="Leave a comment here" id="validationCustom02" required asp-for="Group" />
-                <label for="validationCustom02">@langLocalizer["Group"]</label>
-            </div>
+            <select class="form-select mb-3 @theme" asp-for="Group" required>
+                <option selected disabled value="">@langLocalizer["Group"]</option>
+                @foreach (var item in GroupsCloud.Groups)
+                {
+                    <option class="@theme" value="@item.Value">@langLocalizer[item.Text]</option>
+                }
+            </select>
             <div class="mb-3 @theme">
                 <select class="form-select @theme" id="validationCustom03" placeholder=@langLocalizer["RevTags"] name="_tags" data-allow-clear="true" multiple data-allow-new="true" asp-for="Tags">
                     <option disabled hidden>Default</option>
