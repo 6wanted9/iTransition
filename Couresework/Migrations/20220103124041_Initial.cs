@@ -48,25 +48,6 @@ namespace Couresework.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reviews",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: false),
-                    Group = table.Column<string>(nullable: false),
-                    Tags = table.Column<string>(nullable: true),
-                    ReviewText = table.Column<string>(nullable: false),
-                    Rating = table.Column<int>(nullable: false),
-                    AuthorId = table.Column<string>(nullable: false),
-                    UsersRate = table.Column<double>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Reviews", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -193,6 +174,30 @@ namespace Couresework.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Reviews",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: false),
+                    Group = table.Column<string>(nullable: false),
+                    Tags = table.Column<string>(nullable: true),
+                    ReviewText = table.Column<string>(nullable: false),
+                    Rating = table.Column<int>(nullable: false),
+                    AuthorId = table.Column<string>(nullable: false),
+                    UsersRate = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reviews_AspNetUsers_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Comments",
                 columns: table => new
                 {
@@ -301,6 +306,11 @@ namespace Couresework.Migrations
                 table: "LikesAmounts",
                 column: "UserId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_AuthorId",
+                table: "Reviews",
+                column: "AuthorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ReviewStats_ReviewId",

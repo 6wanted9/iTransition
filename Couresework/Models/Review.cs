@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,6 +20,7 @@ namespace Couresework.Models
             AuthorId = authorId;
             UsersRate = 0;
         }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
@@ -31,6 +33,8 @@ namespace Couresework.Models
         public ushort Rating { get; set; }
         [Required]
         public string AuthorId { get; set; }
+        [ForeignKey("AuthorId")]
+        public AspNetUsers AspNetUsers { get; set; }
         [Required]
         public double UsersRate { get; set; }
         public List<ReviewStat> ReviewStats { get; set; }

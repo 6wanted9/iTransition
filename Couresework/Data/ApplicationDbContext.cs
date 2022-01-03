@@ -11,7 +11,6 @@ namespace Couresework.Data
     public class ApplicationDbContext : IdentityDbContext
     {
         public DbSet<Review> Reviews { get; set; }
-        
         public DbSet<ReviewStat> ReviewStats { get; set; }
         public DbSet<LikesAmount> LikesAmounts { get; set; }
         public DbSet<Comment> Comments { get; set; }
@@ -24,6 +23,15 @@ namespace Couresework.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Review>()
+                .HasKey(t => new { t.Id });
+
+            modelBuilder.Entity<Review>()
+                .HasOne(pt => pt.AspNetUsers)
+                .WithMany(t => t.Reviews)
+                .HasForeignKey(pt => pt.AuthorId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<ReviewStat>()
                 .HasKey(t => new { t.Id });

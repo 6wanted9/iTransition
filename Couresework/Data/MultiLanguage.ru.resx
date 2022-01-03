@@ -120,14 +120,14 @@
   <data name="Author" xml:space="preserve">
     <value>Автор</value>
   </data>
-  <data name="Books" xml:space="preserve">
-    <value>Книги</value>
-  </data>
   <data name="CHOOSE" xml:space="preserve">
     <value>Выбрать</value>
   </data>
   <data name="Comment" xml:space="preserve">
     <value>Комментарий</value>
+  </data>
+  <data name="Culture" xml:space="preserve">
+    <value>Культура</value>
   </data>
   <data name="Delete Review" xml:space="preserve">
     <value>Удалить Обзор</value>
@@ -140,9 +140,6 @@
   </data>
   <data name="Edit Review" xml:space="preserve">
     <value>Редактировать Обзор</value>
-  </data>
-  <data name="Games" xml:space="preserve">
-    <value>Игры</value>
   </data>
   <data name="Group" xml:space="preserve">
     <value>Группа</value>
@@ -174,11 +171,11 @@
   <data name="Like" xml:space="preserve">
     <value>Лайк</value>
   </data>
-  <data name="Movies" xml:space="preserve">
-    <value>Фильмы</value>
-  </data>
   <data name="New Review" xml:space="preserve">
     <value>Новый обзор</value>
+  </data>
+  <data name="Politics" xml:space="preserve">
+    <value>Политика</value>
   </data>
   <data name="Popular reviews" xml:space="preserve">
     <value>Популярные обзоры</value>
@@ -209,6 +206,9 @@
   </data>
   <data name="TAGs" xml:space="preserve">
     <value>Теги</value>
+  </data>
+  <data name="Technologies" xml:space="preserve">
+    <value>Технологии</value>
   </data>
   <data name="Topic" xml:space="preserve">
     <value>Тема</value>

@@ -79,6 +79,18 @@ namespace Couresework.Controllers
                 UploadImages(_imagesURLs, review);
             }
         }
+        public void DeleteReview(int reviewId, string userId)
+        {
+            Response.Redirect("/");
+            var review = _db.Reviews.FirstOrDefault(rev => rev.Id == reviewId);
+            DeleteDropBoxFolder(review);
+            if (review.AuthorId == userId || _db.UserRoles.FirstOrDefault(role => role.UserId == userId && role.RoleId == "0") != null)
+            {
+                _db.Reviews.Remove(review);
+                _db.SaveChanges();
+            }
+        }
+
         private void UploadImages(List<IFormFile> _imagesURLs, Review review)
         {
             var imagesURLs = new List<string>();
@@ -139,17 +151,7 @@ namespace Couresework.Controllers
             return folderExists;
         }
 
-        public void DeleteReview(int reviewId, string userId)
-        {
-            Response.Redirect("/");
-            var review = _db.Reviews.FirstOrDefault(rev => rev.Id == reviewId);
-            DeleteDropBoxFolder(review);
-            if (review.AuthorId == userId || _db.UserRoles.FirstOrDefault(role => role.UserId == userId && role.RoleId == "0") != null)
-            {
-                _db.Reviews.Remove(review);
-                _db.SaveChanges();
-            }
-        }
+        
         public void LikeReview(int reviewID, string userID)
         {
             string authorID = _db.Reviews.FirstOrDefault(rev => rev.Id == reviewID).AuthorId;

@@ -3,6 +3,8 @@
     "",
     "\\Couresework",
     "\\Couresework\\Controllers",
+    "\\Couresework\\Data",
+    "\\Couresework\\Models",
     "\\Couresework\\Views",
     "\\Couresework\\Views\\Home",
     "\\Couresework\\Views\\Shared",

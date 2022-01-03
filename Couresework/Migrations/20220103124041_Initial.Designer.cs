@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Couresework.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211204122830_Initial")]
+    [Migration("20220103124041_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,7 +79,7 @@ namespace Couresework.Migrations
 
                     b.Property<string>("AuthorId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Group")
                         .IsRequired()
@@ -103,6 +103,8 @@ namespace Couresework.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.ToTable("Reviews");
                 });
@@ -370,6 +372,15 @@ namespace Couresework.Migrations
                         .WithOne("LikesAmount")
                         .HasForeignKey("Couresework.Models.LikesAmount", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Couresework.Models.Review", b =>
+                {
+                    b.HasOne("Couresework.Models.AspNetUsers", "AspNetUsers")
+                        .WithMany("Reviews")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 

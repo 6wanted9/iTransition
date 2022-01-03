@@ -57,15 +57,18 @@
                 <div class="mb-3 @theme">
                     <select class="form-select @theme" id="validationCustom03" placeholder=@langLocalizer["RevTags"] name="_tags" data-allow-clear="true" multiple data-allow-new="true" asp-for="Tags">
                         <option disabled hidden>Default</option>
-                        @foreach (var item in TagsRepository.Tags)
-                        {
-                            if(review.Tags.Contains(item))
+                        @{
+                            var tags = review.Tags.Split(',').ToArray();
+                            foreach (var item in tags)
                             {
                                 <option class="@theme" value="@item" selected>@item</option>
                             }
-                            else
+                            foreach (var item in TagsRepository.Tags)
                             {
-                                <option class="@theme" value="@item">@item</option>
+                                if(!tags.Contains(item))
+                                {
+                                    <option class="@theme" value="@item">@item</option>
+                                }
                             }
                         }
                     </select>

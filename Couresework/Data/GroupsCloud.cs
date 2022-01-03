@@ -7,6 +7,6 @@ namespace Couresework.Data
     public static class GroupsCloud
     {
         
-        public static List<SelectListItem> Groups { get; set; } = new List<SelectListItem> { new SelectListItem("Books", "Books"), new SelectListItem("Movies", "Movies"), new SelectListItem("Games", "Games") };
+        public static List<SelectListItem> Groups { get; set; } = new List<SelectListItem> { new SelectListItem("Politics", "Politics"), new SelectListItem("Culture", "Culture"), new SelectListItem("Technologies", "Technologies") };
     }
 }

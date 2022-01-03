@@ -120,14 +120,14 @@
   <data name="Author" xml:space="preserve">
     <value>Author</value>
   </data>
-  <data name="Books" xml:space="preserve">
-    <value>Books</value>
-  </data>
   <data name="CHOOSE" xml:space="preserve">
     <value>CHOOSE</value>
   </data>
   <data name="Comment" xml:space="preserve">
     <value>Comment</value>
+  </data>
+  <data name="Culture" xml:space="preserve">
+    <value>Culture</value>
   </data>
   <data name="Delete Review" xml:space="preserve">
     <value>Delete Review</value>
@@ -140,9 +140,6 @@
   </data>
   <data name="Edit Review" xml:space="preserve">
     <value>Edit Review</value>
-  </data>
-  <data name="Games" xml:space="preserve">
-    <value>Games</value>
   </data>
   <data name="Group" xml:space="preserve">
     <value>Group</value>
@@ -174,11 +171,11 @@
   <data name="Like" xml:space="preserve">
     <value>Like</value>
   </data>
-  <data name="Movies" xml:space="preserve">
-    <value>Movies</value>
-  </data>
   <data name="New Review" xml:space="preserve">
     <value>New Review</value>
+  </data>
+  <data name="Politics" xml:space="preserve">
+    <value>Politics</value>
   </data>
   <data name="Popular reviews" xml:space="preserve">
     <value>Popular reviews</value>
@@ -209,6 +206,9 @@
   </data>
   <data name="TAGs" xml:space="preserve">
     <value>TAGs</value>
+  </data>
+  <data name="Technologies" xml:space="preserve">
+    <value>Technologies</value>
   </data>
   <data name="Topic" xml:space="preserve">
     <value>Topic</value>
